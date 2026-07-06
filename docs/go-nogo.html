@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIC · Go / No-Go Decision — Sulphur Springs Public Library</title>
+<style>
+  :root {
+    --charcoal: #34352F;
+    --copper: #B5552F;
+    --oatmeal: #ECE5D3;
+    --cream: #F4EFE2;
+    --light-rule: #D8CEBC;
+    --mid: #7A7870;
+    --go-green: #2A5C3A;
+    --go-bg: #EAF3EC;
+    --go-border: #6EAD80;
+    --maybe-amber: #7A4E00;
+    --maybe-bg: #FDF3DC;
+    --maybe-border: #D4A830;
+    --no-red: #8B2020;
+    --no-bg: #FAEAEA;
+    --no-border: #CC5555;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background: var(--oatmeal);
+    color: var(--charcoal);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ─── HEADER ─── */
+  .doc-header {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 28px 40px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .aic-wordmark {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 32px;
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--cream);
+  }
+  .aic-wordmark .i-copper { color: var(--copper); }
+  .aic-tagline {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--copper);
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+  }
+  .doc-type { text-align: right; }
+  .doc-type h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .doc-type .doc-meta {
+    font-size: 11px;
+    color: var(--mid);
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+  .copper-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--copper), #D4784A, var(--copper));
+  }
+
+  /* ─── PROJECT BAND ─── */
+  .project-band {
+    background: var(--cream);
+    padding: 18px 40px;
+    border-bottom: 1px solid var(--light-rule);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .pf label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .pf span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+  }
+
+  .body-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
+
+  /* ─── DECISION BADGE ─── */
+  .decision-band {
+    background: var(--go-bg);
+    border: 2px solid var(--go-border);
+    border-radius: 4px;
+    padding: 24px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .decision-badge {
+    background: var(--go-green);
+    color: white;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    padding: 14px 28px;
+    border-radius: 3px;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .decision-badge.go { background: var(--go-green); }
+  .decision-badge.maybe { background: var(--maybe-amber); }
+  .decision-badge.no { background: var(--no-red); }
+
+  .decision-text h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--go-green);
+    margin-bottom: 6px;
+  }
+  .decision-text p {
+    font-size: 12px;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  .score-display {
+    margin-left: auto;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .score-display .score-num {
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--go-green);
+    line-height: 1;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+  }
+  .score-display .score-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--mid);
+    font-family: 'Courier New', monospace;
+    margin-top: 4px;
+  }
+  .score-display .score-threshold {
+    font-size: 11px;
+    color: var(--mid);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin: 28px 0 12px;
+    gap: 12px;
+  }
+  .section-header h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    white-space: nowrap;
+  }
+  .section-header .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--light-rule);
+  }
+
+  /* ─── SCORE MATRIX ─── */
+  .score-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .score-matrix thead tr { background: var(--charcoal); }
+  .score-matrix thead th {
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+  }
+  .score-matrix thead th.center { text-align: center; }
+  .score-matrix thead th.right { text-align: right; }
+  .score-matrix tbody tr { border-bottom: 1px solid var(--light-rule); }
+  .score-matrix tbody tr:last-child { border-bottom: none; }
+  .score-matrix tbody tr:hover { background: #F9F5EC; }
+  .score-matrix td { padding: 10px 12px; vertical-align: top; }
+  .score-matrix td.center { text-align: center; }
+  .score-matrix td.right { text-align: right; }
+
+  .criterion-name { font-weight: 600; color: var(--charcoal); }
+  .criterion-desc { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+  /* Score dots */
+  .score-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--light-rule);
+    flex-shrink: 0;
+  }
+  .dot.filled-green { background: var(--go-green); }
+  .dot.filled-amber { background: #D4A830; }
+  .dot.filled-red { background: #CC5555; }
+
+  .score-raw {
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+  }
+  .score-raw.green { color: var(--go-green); }
+  .score-raw.amber { color: var(--maybe-amber); }
+  .score-raw.red { color: var(--no-red); }
+
+  .weight-pct {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--mid);
+    text-align: center;
+  }
+  .weighted-score {
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    text-align: right;
+    color: var(--charcoal);
+  }
+
+  .category-row {
+    background: #EEE7D4 !important;
+    font-weight: 700;
+  }
+  .category-row td {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--charcoal);
+    font-family: 'Courier New', monospace;
+    padding: 6px 12px;
+  }
+
+  .subtotal-row { background: #E8DFC8 !important; }
+  .subtotal-row td { font-weight: 700; border-top: 2px solid var(--light-rule); }
+  .total-row { background: var(--charcoal) !important; }
+  .total-row td { color: var(--cream) !important; font-weight: 700; border-top: none !important; }
+  .total-row .weighted-score { color: var(--copper) !important; font-size: 16px; }
+
+  /* ─── RISK TABLE ─── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .risk-card {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .risk-card .risk-header {
+    padding: 8px 14px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+  }
+  .risk-card.upside .risk-header { background: var(--go-bg); color: var(--go-green); border-bottom: 1px solid var(--go-border); }
+  .risk-card.downside .risk-header { background: var(--no-bg); color: var(--no-red); border-bottom: 1px solid var(--no-border); }
+  .risk-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--light-rule);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 12px;
+  }
+  .risk-item:last-child { border-bottom: none; }
+  .risk-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .risk-item .title { font-weight: 600; color: var(--charcoal); }
+  .risk-item .detail { font-size: 11px; color: var(--mid); margin-top: 2px; }
+  .risk-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+  .tag-high { background: #FAEAEA; color: var(--no-red); border: 1px solid var(--no-border); }
+  .tag-med { background: var(--maybe-bg); color: var(--maybe-amber); border: 1px solid var(--maybe-border); }
+  .tag-low { background: var(--go-bg); color: var(--go-green); border: 1px solid var(--go-border); }
+
+  /* ─── CONDITIONS GRID ─── */
+  .conditions {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .cond-header {
+    background: var(--charcoal);
+    padding: 8px 16px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+  }
+  .cond-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--light-rule);
+  }
+  .cond-item:last-child { border-bottom: none; }
+  .cond-num {
+    background: var(--copper);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .cond-text .title { font-weight: 600; font-size: 12px; color: var(--charcoal); }
+  .cond-text .detail { font-size: 11px; color: var(--mid); margin-top: 2px; }
+  .cond-owner {
+    margin-left: auto;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    color: var(--mid);
+    text-align: right;
+    white-space: nowrap;
+    padding-left: 12px;
+    padding-top: 2px;
+  }
+
+  /* ─── AI FOOTER ─── */
+  .ai-footer {
+    margin-top: 40px;
+    background: var(--charcoal);
+    border-left: 4px solid var(--copper);
+    padding: 14px 20px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ai-footer .prov { font-size: 11px; color: #9DA2A8; font-family: 'Courier New', monospace; }
+  .ai-footer .prov strong { color: var(--copper); }
+  .ai-footer .sig { font-size: 11px; color: var(--mid); font-family: 'Courier New', monospace; text-align: right; }
+
+  /* ─── APPROVE BAR ─── */
+  .approve-bar {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-top: 3px solid var(--copper);
+    padding: 18px 24px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .approver label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .approver .sig-line {
+    border-bottom: 1px solid var(--charcoal);
+    height: 28px;
+    margin-bottom: 4px;
+  }
+  .approver .name { font-size: 12px; color: var(--mid); font-family: 'Courier New', monospace; }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div>
+    <div class="aic-wordmark">A<span class="i-copper">I</span>C</div>
+    <div class="aic-tagline">AI · CONSTRUCTORS</div>
+  </div>
+  <div class="doc-type">
+    <h1>Bid Go / No-Go Decision</h1>
+    <div class="doc-meta">GNG-2026-0047 &nbsp;·&nbsp; Pre-Bid Analysis &nbsp;·&nbsp; 2026-06-18</div>
+    <div class="doc-meta">Franklin Agent &nbsp;·&nbsp; Preconstruction Intelligence &nbsp;·&nbsp; HILI Gate 2</div>
+  </div>
+</div>
+<div class="copper-rule"></div>
+
+<div class="project-band">
+  <div class="pf">
+    <label>Project</label>
+    <span>Sulphur Springs Public Library — Interior Renovation</span>
+  </div>
+  <div class="pf">
+    <label>Owner</label>
+    <span>Friends of the Library Inc.</span>
+  </div>
+  <div class="pf">
+    <label>Estimate Value</label>
+    <span>$2,776,000 GMP (ROM)</span>
+  </div>
+  <div class="pf">
+    <label>Bid Deadline</label>
+    <span>June 30, 2026 · 2:00 PM PT</span>
+  </div>
+  <div class="pf">
+    <label>Source</label>
+    <span>Owner Direct / Invited Bid</span>
+  </div>
+  <div class="pf">
+    <label>Competition</label>
+    <span>3 contractors invited</span>
+  </div>
+  <div class="pf">
+    <label>Scope Type</label>
+    <span>Library Interior TI — 28,400 RSF</span>
+  </div>
+  <div class="pf">
+    <label>Decision By</label>
+    <span>Tyler VanAuken (AIC)</span>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <!-- DECISION BADGE -->
+  <div class="decision-band">
+    <div class="decision-badge go">GO</div>
+    <div class="decision-text">
+      <h2>Recommendation: Bid This Project</h2>
+      <p>Sulphur Springs Public Library scores 83/100 across all weighted criteria. Strong owner relationship, favorable risk profile, and strategic value in the Sulphur Springs public-renovation market make this a priority pursuit. Schedule risk is the single elevated flag — 22-week duration is aggressive for 3-floor occupied-building work; contingency reserved. Recommend bid with the pricing floor at $2.72M and a clear escalation clause.</p>
+    </div>
+    <div class="score-display">
+      <div class="score-num">83</div>
+      <div class="score-label">Composite Score</div>
+      <div class="score-threshold">GO threshold: 65 &nbsp;|&nbsp; NO-GO: &lt;50</div>
+    </div>
+  </div>
+
+  <!-- SCORING MATRIX -->
+  <div class="section-header">
+    <h2>Weighted Scoring Matrix</h2>
+    <div class="rule"></div>
+  </div>
+  <table class="score-matrix">
+    <thead>
+      <tr>
+        <th style="width:280px">Criterion</th>
+        <th class="center" style="width:120px">Rating (0–10)</th>
+        <th class="center" style="width:80px">Weight</th>
+        <th class="right" style="width:100px">Weighted Score</th>
+        <th style="width:220px">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- STRATEGIC -->
+      <tr class="category-row"><td colspan="5">Strategic Fit</td></tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Market Alignment</div>
+          <div class="criterion-desc">Does this advance our public-renovation positioning?</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">8/10</div>
+        </td>
+        <td class="weight-pct">15%</td>
+        <td class="weighted-score">12.0</td>
+        <td style="font-size:11px; color: var(--mid);">High-visibility civic-center Sulphur Springs location; strong portfolio addition</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Client Relationship</div>
+          <div class="criterion-desc">Existing relationship, repeat business potential</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">9/10</div>
+        </td>
+        <td class="weight-pct">10%</td>
+        <td class="weighted-score">9.0</td>
+        <td style="font-size:11px; color: var(--mid);">Friends of the Library is a returning client; Sulphur Springs Library Phase 1 completed Q4 2025</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Revenue Target Fit</div>
+          <div class="criterion-desc">$2.3M–$4M target range for H2 2026</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">8/10</div>
+        </td>
+        <td class="weight-pct">5%</td>
+        <td class="weighted-score">4.0</td>
+        <td style="font-size:11px; color: var(--mid);">$2.78M sits squarely in the target band</td>
+      </tr>
+
+      <!-- FINANCIAL -->
+      <tr class="category-row"><td colspan="5">Financial Performance</td></tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Margin Profile</div>
+          <div class="criterion-desc">OH+Profit achieves ≥7% minimum threshold</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">7/10</div>
+        </td>
+        <td class="weight-pct">20%</td>
+        <td class="weighted-score">14.0</td>
+        <td style="font-size:11px; color: var(--mid);">7.5% OH+P is at threshold. Competitive pressure may compress; floor = 7.0%</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Payment Terms / Cash Flow</div>
+          <div class="criterion-desc">Net 30, 10% retainage standard</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">8/10</div>
+        </td>
+        <td class="weight-pct">10%</td>
+        <td class="weighted-score">8.0</td>
+        <td style="font-size:11px; color: var(--mid);">Net-30 confirmed; retainage reduced to 5% after 50% complete per Phase 1 precedent</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Bid Bond / Bond Capacity</div>
+          <div class="criterion-desc">P&P bond available within capacity</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+          </div>
+          <div class="score-raw green">10/10</div>
+        </td>
+        <td class="weight-pct">5%</td>
+        <td class="weighted-score">5.0</td>
+        <td style="font-size:11px; color: var(--mid);">Well within aggregate bond capacity; Merchants Bonding confirmed</td>
+      </tr>
+
+      <!-- RISK -->
+      <tr class="category-row"><td colspan="5">Execution Risk</td></tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Schedule Risk</div>
+          <div class="criterion-desc">22-week GMP — occupied building, single elevator</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-amber"></div><div class="dot filled-amber"></div><div class="dot filled-amber"></div>
+            <div class="dot filled-amber"></div><div class="dot filled-amber"></div><div class="dot"></div>
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw amber">5/10</div>
+        </td>
+        <td class="weight-pct">15%</td>
+        <td class="weighted-score">7.5</td>
+        <td style="font-size:11px; color:#7A4E00; font-weight:600;">⚠ ELEVATED — 22 weeks is tight; float is ≤3 days on critical path. Escalation clause required.</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Scope Clarity</div>
+          <div class="criterion-desc">100% SD docs available; CDs expected July 7</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">7/10</div>
+        </td>
+        <td class="weight-pct">10%</td>
+        <td class="weighted-score">7.0</td>
+        <td style="font-size:11px; color: var(--mid);">SD complete; minor MEP coordination TBD. Waiting on 100% CDs before locking subs</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="criterion-name">Subcontractor Availability</div>
+          <div class="criterion-desc">MEP, glazing, millwork capacity for Q3 2026 start</div>
+        </td>
+        <td class="center">
+          <div class="score-dots">
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-green"></div><div class="dot filled-green"></div><div class="dot filled-green"></div>
+            <div class="dot filled-amber"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="score-raw green">6/10</div>
+        </td>
+        <td class="weight-pct">10%</td>
+        <td class="weighted-score">6.0</td>
+        <td style="font-size:11px; color: var(--mid);">MEP confirmed; glazing sub has 4-wk lead. Millwork sub at capacity — need second source</td>
+      </tr>
+
+      <!-- TOTAL -->
+      <tr class="total-row">
+        <td colspan="3" style="font-size:13px;">Composite Score &nbsp;(GO ≥ 65 · MAYBE 50–64 · NO-GO &lt; 50)</td>
+        <td class="weighted-score" style="font-size:20px; color: var(--copper) !important;">83 / 100</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- RISK BREAKDOWN -->
+  <div class="section-header">
+    <h2>Upside Opportunities &amp; Downside Risks</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="risk-grid">
+    <div class="risk-card upside">
+      <div class="risk-header">↑ Upside Opportunities</div>
+      <div class="risk-item">
+        <div class="risk-icon">🏢</div>
+        <div>
+          <div class="title">Phase 2 Option — Floors 14–16</div>
+          <div class="detail">Friends of the Library has verbally indicated a Phase 2 (3 additional floors) pending Phase 1 delivery. Estimated $2.9M with a preferred contractor clause.</div>
+          <span class="risk-tag tag-high">HIGH VALUE</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">📋</div>
+        <div>
+          <div class="title">Framework Agreement Opportunity</div>
+          <div class="detail">Friends of the Library owns 4 other buildings in Sulphur Springs CBD. A strong Sulphur Springs Public Library delivery could position us for a preferred-GC framework agreement.</div>
+          <span class="risk-tag tag-med">MEDIUM VALUE</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">📷</div>
+        <div>
+          <div class="title">Portfolio Photography / Reference</div>
+          <div class="detail">Durable public-space finishes in a landmark civic building — strong marketing asset for public-sector pursuit strategy.</div>
+          <span class="risk-tag tag-low">LOW VALUE</span>
+        </div>
+      </div>
+    </div>
+    <div class="risk-card downside">
+      <div class="risk-header">↓ Downside Risks</div>
+      <div class="risk-item">
+        <div class="risk-icon">⏱</div>
+        <div>
+          <div class="title">Schedule Compression Risk</div>
+          <div class="detail">22-week duration is tight for 3-floor occupied TI with single-elevator access. Any MEP coordination or permit delay collapses float immediately.</div>
+          <span class="risk-tag tag-high">HIGH</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">🔨</div>
+        <div>
+          <div class="title">Millwork Sub Capacity Gap</div>
+          <div class="detail">Primary millwork sub is at capacity. If second source is unavailable by July 5, kitchen lead times push the critical path by 2–3 weeks.</div>
+          <span class="risk-tag tag-high">HIGH</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">📋</div>
+        <div>
+          <div class="title">ACM Abatement Scope Uncertainty</div>
+          <div class="detail">Survey is complete but remediation scope could expand by $15–40K depending on condition findings behind Column Line F partitions.</div>
+          <span class="risk-tag tag-med">MEDIUM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONDITIONS TO BID -->
+  <div class="section-header">
+    <h2>Conditions to Bid (pre-submittal requirements)</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="conditions">
+    <div class="cond-header">Required Before Bid Submittal — June 30, 2026</div>
+    <div class="cond-item">
+      <div class="cond-num">1</div>
+      <div class="cond-text">
+        <div class="title">Lock second-source millwork subcontractor</div>
+        <div class="detail">Confirm bid from Pacific Cabinet Group or NW Millwork as backup to Primary Sub. Required to secure millwork lead times on critical path.</div>
+      </div>
+      <div class="cond-owner">Owner: Mark B.<br><strong>Due: Jun 23</strong></div>
+    </div>
+    <div class="cond-item">
+      <div class="cond-num">2</div>
+      <div class="cond-text">
+        <div class="title">Confirm escalation clause language with Friends of the Library</div>
+        <div class="detail">Schedule risk requires an agreed escalation clause for material & labor cost changes beyond June 30 lock date. Get Friends of the Library PM sign-off before final number.</div>
+      </div>
+      <div class="cond-owner">Owner: Mark B.<br><strong>Due: Jun 25</strong></div>
+    </div>
+    <div class="cond-item">
+      <div class="cond-num">3</div>
+      <div class="cond-text">
+        <div class="title">Receive 100% Construction Documents</div>
+        <div class="detail">Currently at 100% SD. CDs expected July 7 per architect. Submit ROM with note that final GMP adjusts upon CDs; confirm with Friends of the Library this is acceptable.</div>
+      </div>
+      <div class="cond-owner">Owner: Arch / Friends of the Library<br><strong>Due: Jul 7 (note)</strong></div>
+    </div>
+    <div class="cond-item">
+      <div class="cond-num">4</div>
+      <div class="cond-text">
+        <div class="title">Verify Phase 2 intent in writing</div>
+        <div class="detail">Request a letter of intent or email confirmation of Phase 2 option from Friends of the Library. Not a bid condition, but strategically important before pricing aggressively.</div>
+      </div>
+      <div class="cond-owner">Owner: Mark B.<br><strong>Due: Jun 27</strong></div>
+    </div>
+  </div>
+
+  <!-- HILI APPROVAL -->
+  <div class="section-header">
+    <h2>HILI Approval — Gate 2 (ROM Before Bid Production)</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="approve-bar">
+    <div class="approver">
+      <label>Bid Decision Approval</label>
+      <div class="sig-line"></div>
+      <div class="name">Tyler VanAuken · Principal</div>
+    </div>
+    <div class="approver">
+      <label>Estimate Review</label>
+      <div class="sig-line"></div>
+      <div class="name">Preconstruction Lead</div>
+    </div>
+    <div class="approver">
+      <label>Dated Approval</label>
+      <div class="sig-line"></div>
+      <div class="name">Date &nbsp; / &nbsp; Time</div>
+    </div>
+  </div>
+
+  <!-- AI FOOTER -->
+  <div class="ai-footer">
+    <div class="prov">
+      <strong>Franklin</strong> · AIC Preconstruction Agent &nbsp;|&nbsp;
+      GNG-2026-0047 &nbsp;|&nbsp; HILI Gate 2 &nbsp;|&nbsp;
+      Score: <strong style="color:#9DA2A8">83/100 — GO</strong> &nbsp;|&nbsp;
+      Awaiting HILI signature before bid production
+    </div>
+    <div class="sig">
+      Generated: 2026-06-18 &nbsp;·&nbsp; mark.b@ai-constructors.com<br>
+      AIC · ai-constructors.com &nbsp;·&nbsp; Bothell, WA
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

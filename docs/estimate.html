@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIC · Construction Cost Estimate — Sulphur Springs Public Library</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+
+  :root {
+    --charcoal: #34352F;
+    --copper: #B5552F;
+    --oatmeal: #ECE5D3;
+    --cream: #F4EFE2;
+    --white: #FFFFFF;
+    --mid: #7A7870;
+    --light-rule: #D8CEBC;
+    --green: #2E6B3E;
+    --amber: #8A5C00;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background: var(--oatmeal);
+    color: var(--charcoal);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ─── HEADER ─── */
+  .doc-header {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 28px 40px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .aic-wordmark {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .aic-wordmark .i-copper { color: var(--copper); }
+  .aic-tagline {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--copper);
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+  }
+  .doc-type {
+    text-align: right;
+  }
+  .doc-type h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+  }
+  .doc-type .doc-meta {
+    font-size: 11px;
+    color: var(--mid);
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+  .copper-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--copper) 0%, #D4784A 50%, var(--copper) 100%);
+  }
+
+  /* ─── PROJECT BAND ─── */
+  .project-band {
+    background: var(--cream);
+    padding: 18px 40px;
+    border-bottom: 1px solid var(--light-rule);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .pf label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .pf span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+  }
+
+  /* ─── BODY ─── */
+  .body-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
+
+  /* ─── SUMMARY BAR ─── */
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .sum-card {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-top: 3px solid var(--copper);
+    padding: 14px 16px;
+    border-radius: 2px;
+  }
+  .sum-card.total-card {
+    background: var(--charcoal);
+    border-top-color: var(--copper);
+  }
+  .sum-card label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sum-card.total-card label { color: var(--copper); }
+  .sum-card .val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--charcoal);
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+  }
+  .sum-card.total-card .val { color: var(--cream); font-size: 22px; }
+  .sum-card .sub {
+    font-size: 10px;
+    color: var(--mid);
+    margin-top: 2px;
+    font-family: 'Courier New', monospace;
+  }
+  .sum-card.total-card .sub { color: #9DA2A8; }
+
+  /* ─── DIVISION TABLE ─── */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 28px 0 10px;
+  }
+  .section-header h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+  }
+  .section-header .divider {
+    flex: 1;
+    height: 1px;
+    background: var(--light-rule);
+    margin-left: 16px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  thead tr {
+    background: var(--charcoal);
+  }
+  thead th {
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+  }
+  thead th.right { text-align: right; }
+  tbody tr {
+    border-bottom: 1px solid var(--light-rule);
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #F9F5EC; }
+  tbody tr.div-subtotal {
+    background: #EDE5CE;
+    font-weight: 700;
+    border-top: 2px solid var(--light-rule);
+  }
+  td {
+    padding: 7px 12px;
+    color: var(--charcoal);
+  }
+  td.code {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--mid);
+    width: 80px;
+  }
+  td.right { text-align: right; }
+  td.unit { color: var(--mid); font-size: 11px; font-family: 'Courier New', monospace; }
+  td.amount { font-weight: 600; text-align: right; }
+  td.confidence {
+    text-align: center;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+  }
+  .conf-high { color: var(--green); }
+  .conf-med  { color: var(--amber); }
+  .conf-low  { color: #B5552F; }
+
+  .div-label {
+    background: #EEE7D4;
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--charcoal);
+    border-bottom: 1px solid var(--light-rule);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ─── MARKUP TABLE ─── */
+  .markup-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    margin-bottom: 6px;
+  }
+  .markup-table td { padding: 7px 12px; border-bottom: 1px solid var(--light-rule); }
+  .markup-table tr:last-child td { border-bottom: none; }
+  .markup-table .label { font-weight: 500; }
+  .markup-table .pct { font-family: 'Courier New', monospace; color: var(--mid); font-size: 11px; text-align: center; }
+  .markup-table .amount { font-weight: 600; text-align: right; }
+  .markup-table tr.total-row { background: var(--charcoal); }
+  .markup-table tr.total-row td { color: var(--cream); border-bottom: none; font-weight: 700; font-size: 14px; }
+  .markup-table tr.total-row .pct { color: var(--copper); }
+
+  /* ─── AI PROVENANCE ─── */
+  .ai-footer {
+    margin-top: 40px;
+    background: var(--charcoal);
+    border-left: 4px solid var(--copper);
+    padding: 14px 20px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ai-footer .prov {
+    font-size: 11px;
+    color: #9DA2A8;
+    font-family: 'Courier New', monospace;
+  }
+  .ai-footer .prov strong { color: var(--copper); }
+  .ai-footer .sig {
+    font-size: 11px;
+    color: var(--mid);
+    font-family: 'Courier New', monospace;
+    text-align: right;
+  }
+
+  /* ─── ASSUMPTIONS BOX ─── */
+  .assumptions {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-left: 4px solid var(--copper);
+    padding: 16px 20px;
+    margin-top: 24px;
+    border-radius: 2px;
+  }
+  .assumptions h3 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    margin-bottom: 10px;
+  }
+  .assumptions ul {
+    list-style: none;
+    columns: 2;
+    gap: 20px;
+  }
+  .assumptions li {
+    font-size: 11px;
+    color: var(--charcoal);
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .assumptions li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--copper);
+    font-weight: bold;
+  }
+
+  @media print {
+    body { background: white; }
+    .doc-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .copper-rule { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="doc-header">
+  <div>
+    <div class="aic-wordmark">A<span class="i-copper">I</span>C</div>
+    <div class="aic-tagline">AI · CONSTRUCTORS</div>
+  </div>
+  <div class="doc-type">
+    <h1>Construction Cost Estimate</h1>
+    <div class="doc-meta">EST-2026-0047 &nbsp;·&nbsp; Level 2 — ROM &nbsp;·&nbsp; Issued: 2026-06-18</div>
+    <div class="doc-meta">Franklin Agent &nbsp;·&nbsp; Preconstruction Intelligence</div>
+  </div>
+</div>
+<div class="copper-rule"></div>
+
+<!-- ── PROJECT BAND ── -->
+<div class="project-band">
+  <div class="pf">
+    <label>Project</label>
+    <span>Sulphur Springs Public Library — Interior Renovation</span>
+  </div>
+  <div class="pf">
+    <label>Owner / Client</label>
+    <span>Friends of the Library Inc.</span>
+  </div>
+  <div class="pf">
+    <label>Location</label>
+    <span>611 N. Davis St, Sulphur Springs, TX 75482</span>
+  </div>
+  <div class="pf">
+    <label>Bid Date</label>
+    <span>June 30, 2026</span>
+  </div>
+  <div class="pf">
+    <label>Contract Type</label>
+    <span>GMP / Design-Build TI</span>
+  </div>
+  <div class="pf">
+    <label>Scope</label>
+    <span>Public Library — Interior Renovation</span>
+  </div>
+  <div class="pf">
+    <label>Gross SF</label>
+    <span>28,400 RSF</span>
+  </div>
+  <div class="pf">
+    <label>Duration</label>
+    <span>22 Weeks &nbsp;(Jul 14 – Dec 12, 2026)</span>
+  </div>
+</div>
+
+<!-- ── BODY ── -->
+<div class="body-wrap">
+
+  <!-- Summary Cards -->
+  <div class="summary-bar">
+    <div class="sum-card">
+      <label>Direct Cost</label>
+      <div class="val">$2,418,300</div>
+      <div class="sub">Subcontracts + Self-perform</div>
+    </div>
+    <div class="sum-card">
+      <label>General Conditions</label>
+      <div class="val">$218,500</div>
+      <div class="sub">8.28% of direct</div>
+    </div>
+    <div class="sum-card">
+      <label>Overhead + Fee</label>
+      <div class="val">$193,500</div>
+      <div class="sub">7.33% of direct + GC</div>
+    </div>
+    <div class="sum-card">
+      <label>Contingency</label>
+      <div class="val">$144,000</div>
+      <div class="sub">5.0% — Level 2 ROM</div>
+    </div>
+    <div class="sum-card total-card">
+      <label>GMP Estimate</label>
+      <div class="val">$2,974,300</div>
+      <div class="sub">$104.73 / RSF all-in</div>
+    </div>
+  </div>
+
+  <!-- DIV 01 — GENERAL CONDITIONS -->
+  <div class="section-header">
+    <h2>Division 01 — General Requirements</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="div-label"><td colspan="7">Project Management & Supervision</td></tr>
+      <tr>
+        <td class="code">01-2000</td>
+        <td>Project Manager (22 wks @ 0.5 FTE)</td>
+        <td class="right">11</td>
+        <td class="unit">wks</td>
+        <td class="right">$3,850</td>
+        <td class="amount">$42,350</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">01-2010</td>
+        <td>Field Superintendent (22 wks full-time)</td>
+        <td class="right">22</td>
+        <td class="unit">wks</td>
+        <td class="right">$4,200</td>
+        <td class="amount">$92,400</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">01-3000</td>
+        <td>Project Closeout / Commissioning</td>
+        <td class="right">1</td>
+        <td class="unit">LS</td>
+        <td class="right">$8,500</td>
+        <td class="amount">$8,500</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Site Logistics & Temporary Facilities</td></tr>
+      <tr>
+        <td class="code">01-5000</td>
+        <td>Temporary Protection, Hoarding, Barricades</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$0.85</td>
+        <td class="amount">$24,140</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">01-5010</td>
+        <td>Temporary Power / Utilities</td>
+        <td class="right">22</td>
+        <td class="unit">wks</td>
+        <td class="right">$850</td>
+        <td class="amount">$18,700</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">01-5020</td>
+        <td>Dumpster, Debris Removal — Public-Building Protocol</td>
+        <td class="right">22</td>
+        <td class="unit">wks</td>
+        <td class="right">$1,100</td>
+        <td class="amount">$24,200</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">01-7500</td>
+        <td>Final Cleaning, Punch, Turnover</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$0.30</td>
+        <td class="amount">$8,520</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Division 01 Subtotal</td>
+        <td class="amount">$218,810</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIV 02 — DEMOLITION -->
+  <div class="section-header">
+    <h2>Division 02 — Existing Conditions / Demolition</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">02-4100</td>
+        <td>Selective Demolition — Partitions, Millwork, Flooring</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$4.20</td>
+        <td class="amount">$119,280</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">02-4200</td>
+        <td>Ceiling Demolition (tile, grid, clouds)</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$1.85</td>
+        <td class="amount">$52,540</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">02-8200</td>
+        <td>Hazardous Material Abatement Allowance (ACM survey complete)</td>
+        <td class="right">1</td>
+        <td class="unit">LS</td>
+        <td class="right">$22,000</td>
+        <td class="amount">$22,000</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Division 02 Subtotal</td>
+        <td class="amount">$193,820</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIV 06/09 — FRAMING & FINISHES -->
+  <div class="section-header">
+    <h2>Divisions 06 / 09 — Framing, Insulation & Interior Finishes</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="div-label"><td colspan="7">Light Gauge Steel Framing</td></tr>
+      <tr>
+        <td class="code">06-1000</td>
+        <td>LGS Partition Framing — Open Office Zones</td>
+        <td class="right">3,200</td>
+        <td class="unit">LF</td>
+        <td class="right">$18.50</td>
+        <td class="amount">$59,200</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">06-1010</td>
+        <td>LGS Partition Framing — Private Offices / Conf Rooms</td>
+        <td class="right">1,840</td>
+        <td class="unit">LF</td>
+        <td class="right">$22.00</td>
+        <td class="amount">$40,480</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Drywall, Insulation & Ceilings</td></tr>
+      <tr>
+        <td class="code">09-2100</td>
+        <td>GWB — 2-ply 5/8" Type X STC Assemblies</td>
+        <td class="right">18,600</td>
+        <td class="unit">SF</td>
+        <td class="right">$3.40</td>
+        <td class="amount">$63,240</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">09-2110</td>
+        <td>Batt Insulation (acoustic R-11)</td>
+        <td class="right">14,200</td>
+        <td class="unit">SF</td>
+        <td class="right">$1.10</td>
+        <td class="amount">$15,620</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">09-5100</td>
+        <td>Suspended ACT Grid + Tile (open zones)</td>
+        <td class="right">14,800</td>
+        <td class="unit">SF</td>
+        <td class="right">$5.80</td>
+        <td class="amount">$85,840</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">09-5110</td>
+        <td>Exposed Structure / Painted Deck</td>
+        <td class="right">13,600</td>
+        <td class="unit">SF</td>
+        <td class="right">$2.20</td>
+        <td class="amount">$29,920</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Flooring & Paint</td></tr>
+      <tr>
+        <td class="code">09-6500</td>
+        <td>LVP Flooring — Open Office + Corridors</td>
+        <td class="right">19,800</td>
+        <td class="unit">SF</td>
+        <td class="right">$6.20</td>
+        <td class="amount">$122,760</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">09-6800</td>
+        <td>Carpet Tile — Private Offices / Conf Rooms</td>
+        <td class="right">7,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$7.50</td>
+        <td class="amount">$55,500</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">09-6900</td>
+        <td>Polished Concrete — Reception / Lobby Core</td>
+        <td class="right">1,200</td>
+        <td class="unit">SF</td>
+        <td class="right">$12.00</td>
+        <td class="amount">$14,400</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">09-9100</td>
+        <td>Painting — Walls, Ceilings, Reveals, Accent</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$2.80</td>
+        <td class="amount">$79,520</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Div 06/09 Subtotal</td>
+        <td class="amount">$566,480</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIV 08 — DOORS/GLAZING -->
+  <div class="section-header">
+    <h2>Division 08 — Openings, Doors & Glazing</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">08-1100</td>
+        <td>Hollow Metal Doors + HM Frames (3068)</td>
+        <td class="right">44</td>
+        <td class="unit">EA</td>
+        <td class="right">$1,850</td>
+        <td class="amount">$81,400</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">08-7100</td>
+        <td>Schlage Commercial Hardware Set (lever, closer, HM)</td>
+        <td class="right">44</td>
+        <td class="unit">EA</td>
+        <td class="right">$680</td>
+        <td class="amount">$29,920</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr>
+        <td class="code">08-4100</td>
+        <td>Aluminum Storefront System — Conference Room Glazing</td>
+        <td class="right">1,840</td>
+        <td class="unit">SF</td>
+        <td class="right">$48.00</td>
+        <td class="amount">$88,320</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">08-8000</td>
+        <td>Glazing Film / Manifestation</td>
+        <td class="right">1,840</td>
+        <td class="unit">SF</td>
+        <td class="right">$4.50</td>
+        <td class="amount">$8,280</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Division 08 Subtotal</td>
+        <td class="amount">$207,920</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIV 12 — CASEWORK / SPECIALTIES -->
+  <div class="section-header">
+    <h2>Division 12 — Casework, Millwork & Specialties</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">12-3216</td>
+        <td>Kitchen / Break Room Casework (3 kitchens, one per floor)</td>
+        <td class="right">3</td>
+        <td class="unit">EA</td>
+        <td class="right">$28,500</td>
+        <td class="amount">$85,500</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">12-3220</td>
+        <td>Reception Millwork + Feature Wall (custom)</td>
+        <td class="right">1</td>
+        <td class="unit">LS</td>
+        <td class="right">$42,000</td>
+        <td class="amount">$42,000</td>
+        <td class="confidence conf-low">LOW</td>
+      </tr>
+      <tr>
+        <td class="code">10-2800</td>
+        <td>Toilet Accessories, Signage, Fire Extinguishers</td>
+        <td class="right">1</td>
+        <td class="unit">LS</td>
+        <td class="right">$18,400</td>
+        <td class="amount">$18,400</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Div 12 / 10 Subtotal</td>
+        <td class="amount">$145,900</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIV 21-28 — MEP -->
+  <div class="section-header">
+    <h2>Divisions 21–28 — Mechanical, Electrical, Plumbing & Low Voltage</h2>
+    <div class="divider"></div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">CSI Code</th>
+        <th>Description</th>
+        <th class="right" style="width:80px">Qty</th>
+        <th style="width:70px">Unit</th>
+        <th class="right" style="width:80px">Unit Cost</th>
+        <th class="right" style="width:100px">Total</th>
+        <th style="width:60px; text-align:center">Conf.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="div-label"><td colspan="7">Division 21–22 — Fire Suppression & Plumbing</td></tr>
+      <tr>
+        <td class="code">21-1300</td>
+        <td>Fire Sprinkler System Relocate / Extend</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$3.80</td>
+        <td class="amount">$107,920</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">22-1000</td>
+        <td>Plumbing — Kitchen Rough-in + Fixtures (3 kitchens)</td>
+        <td class="right">3</td>
+        <td class="unit">EA</td>
+        <td class="right">$14,200</td>
+        <td class="amount">$42,600</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Division 23 — HVAC</td></tr>
+      <tr>
+        <td class="code">23-3100</td>
+        <td>VAV Boxes / Distribution Ductwork — Open Office</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$8.20</td>
+        <td class="amount">$232,880</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">23-8200</td>
+        <td>Controls / BAS Integration (tie to base building)</td>
+        <td class="right">1</td>
+        <td class="unit">LS</td>
+        <td class="right">$38,500</td>
+        <td class="amount">$38,500</td>
+        <td class="confidence conf-low">LOW</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Division 26 — Electrical</td></tr>
+      <tr>
+        <td class="code">26-2000</td>
+        <td>Power Distribution — Panel Circuits, Devices (one panel/flr)</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$9.50</td>
+        <td class="amount">$269,800</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">26-5000</td>
+        <td>Lighting — LED Fixtures, Dimmers, Daylight Sensors</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$7.20</td>
+        <td class="amount">$204,480</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr class="div-label"><td colspan="7">Division 27–28 — Data / Security / AV</td></tr>
+      <tr>
+        <td class="code">27-1500</td>
+        <td>Structured Cabling — Cat6A, Fiber Backbone, Patch</td>
+        <td class="right">28,400</td>
+        <td class="unit">SF</td>
+        <td class="right">$4.20</td>
+        <td class="amount">$119,280</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">28-1300</td>
+        <td>Access Control — Card Readers, Door Hardware Integration</td>
+        <td class="right">44</td>
+        <td class="unit">EA</td>
+        <td class="right">$1,200</td>
+        <td class="amount">$52,800</td>
+        <td class="confidence conf-med">MED</td>
+      </tr>
+      <tr>
+        <td class="code">28-2300</td>
+        <td>AV Rough-in (conferencing, displays; GFE by Owner)</td>
+        <td class="right">12</td>
+        <td class="unit">EA</td>
+        <td class="right">$1,850</td>
+        <td class="amount">$22,200</td>
+        <td class="confidence conf-high">HIGH</td>
+      </tr>
+      <tr class="div-subtotal">
+        <td colspan="5" style="text-align:right; padding-right:16px">Div 21–28 Subtotal</td>
+        <td class="amount">$1,090,460</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DIRECT COST SUMMARY -->
+  <div class="section-header">
+    <h2>Markup & Fee Summary</h2>
+    <div class="divider"></div>
+  </div>
+  <table class="markup-table">
+    <tbody>
+      <tr>
+        <td class="label" style="width:60%">Division 01 — General Requirements</td>
+        <td class="pct">incl.</td>
+        <td class="amount">$218,810</td>
+      </tr>
+      <tr>
+        <td class="label">Division 02 — Existing Conditions / Demo</td>
+        <td class="pct">—</td>
+        <td class="amount">$193,820</td>
+      </tr>
+      <tr>
+        <td class="label">Divisions 06 / 09 — Framing & Finishes</td>
+        <td class="pct">—</td>
+        <td class="amount">$566,480</td>
+      </tr>
+      <tr>
+        <td class="label">Division 08 — Openings, Doors & Glazing</td>
+        <td class="pct">—</td>
+        <td class="amount">$207,920</td>
+      </tr>
+      <tr>
+        <td class="label">Division 12 / 10 — Casework & Specialties</td>
+        <td class="pct">—</td>
+        <td class="amount">$145,900</td>
+      </tr>
+      <tr>
+        <td class="label">Divisions 21–28 — MEP & Low Voltage</td>
+        <td class="pct">—</td>
+        <td class="amount">$1,090,460</td>
+      </tr>
+      <tr>
+        <td class="label" style="font-weight:700">Subtotal — Direct Construction Cost</td>
+        <td class="pct" style="font-weight:700">—</td>
+        <td class="amount" style="font-weight:700; font-size:14px">$2,423,390</td>
+      </tr>
+      <tr>
+        <td class="label">General Conditions (on-site supervision, temp facilities)</td>
+        <td class="pct">already incl. in Div 01</td>
+        <td class="amount">—</td>
+      </tr>
+      <tr>
+        <td class="label">Overhead &amp; Profit</td>
+        <td class="pct">7.5%</td>
+        <td class="amount">$181,754</td>
+      </tr>
+      <tr>
+        <td class="label">Insurance (Builder's Risk + GL)</td>
+        <td class="pct">1.2%</td>
+        <td class="amount">$29,081</td>
+      </tr>
+      <tr>
+        <td class="label">Payment &amp; Performance Bond</td>
+        <td class="pct">0.85%</td>
+        <td class="amount">$20,599</td>
+      </tr>
+      <tr>
+        <td class="label">Design Contingency (Level 2 ROM)</td>
+        <td class="pct">5.0%</td>
+        <td class="amount">$121,170</td>
+      </tr>
+      <tr class="total-row">
+        <td class="label">GMP ESTIMATE — SULPHUR SPRINGS PUBLIC LIBRARY</td>
+        <td class="pct">—</td>
+        <td class="amount">$2,775,994</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ASSUMPTIONS -->
+  <div class="assumptions">
+    <h3>Estimating Assumptions &amp; Exclusions</h3>
+    <ul>
+      <li>Based on 100% SD drawings + architectural narrative dated 2026-06-10</li>
+      <li>Owner-furnished, contractor-installed (OFCI): AV displays, appliances, furniture</li>
+      <li>Permit fees excluded — Owner responsibility per LOI</li>
+      <li>Working hours: Mon–Fri 7am–5pm; Saturday available if needed</li>
+      <li>Base building HVAC, elevator, and electrical service assumed adequate</li>
+      <li>ACM survey complete; remediation allowance included at $22,000</li>
+      <li>Structural upgrades and seismic not included (not in current scope)</li>
+      <li>Pricing based on Q2 2026 Sulphur Springs-area labor + material indices</li>
+      <li>Escalation beyond Q3 2026 not included; GMP locks at contract award</li>
+      <li>Subcontractor quotes: MEP ±15% (single-source); finishes ±5% (3 bids)</li>
+    </ul>
+  </div>
+
+  <!-- AI PROVENANCE FOOTER -->
+  <div class="ai-footer">
+    <div class="prov">
+      <strong>Franklin</strong> · AIC Preconstruction Agent &nbsp;|&nbsp;
+      EST-2026-0047 &nbsp;|&nbsp; Level 2 — ROM &nbsp;|&nbsp;
+      Confidence: <strong style="color:#9DA2A8">MED-HIGH</strong> &nbsp;|&nbsp;
+      Pending HILI review before transmittal
+    </div>
+    <div class="sig">
+      Prepared: 2026-06-18 &nbsp;·&nbsp; mark.b@ai-constructors.com<br>
+      AIC · ai-constructors.com &nbsp;·&nbsp; Bothell, WA
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

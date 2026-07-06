@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIC · GMP Proposal — Sulphur Springs Public Library</title>
+<style>
+  :root {
+    --charcoal: #34352F;
+    --copper: #B5552F;
+    --oatmeal: #ECE5D3;
+    --cream: #F4EFE2;
+    --light-rule: #D8CEBC;
+    --mid: #7A7870;
+    --dark-mid: #5A5850;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background: var(--oatmeal);
+    color: var(--charcoal);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ─── COVER PAGE ─── */
+  .cover {
+    background: var(--charcoal);
+    min-height: 320px;
+    padding: 52px 60px 44px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 320px;
+    height: 320px;
+    border: 40px solid rgba(181,85,47,0.12);
+    border-radius: 50%;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: 200px;
+    width: 180px;
+    height: 180px;
+    border: 24px solid rgba(181,85,47,0.07);
+    border-radius: 50%;
+  }
+
+  .cover-left { position: relative; z-index: 1; }
+  .aic-wordmark {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 40px;
+    letter-spacing: 3px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .aic-wordmark .i-copper { color: var(--copper); }
+  .aic-tagline {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    margin-bottom: 36px;
+  }
+  .cover-divider {
+    width: 80px;
+    height: 3px;
+    background: var(--copper);
+    margin-bottom: 24px;
+  }
+  .cover-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    color: var(--copper);
+    margin-bottom: 6px;
+  }
+  .cover-location {
+    font-size: 13px;
+    color: #9DA2A8;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .cover-right {
+    text-align: right;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-meta-block {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(181,85,47,0.3);
+    border-top: 3px solid var(--copper);
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+  .cover-meta-block label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .cover-meta-block .val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .cover-meta-block .val.price {
+    font-size: 26px;
+    color: var(--copper);
+  }
+
+  .copper-rule { height: 3px; background: linear-gradient(90deg, var(--copper), #D4784A, var(--copper)); }
+  .thin-rule { height: 1px; background: var(--light-rule); }
+
+  /* ─── BODY ─── */
+  .body-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 44px 60px;
+  }
+
+  .section {
+    margin-bottom: 44px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--light-rule);
+  }
+  .section-num {
+    background: var(--copper);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+  .section-sub {
+    font-size: 11px;
+    color: var(--mid);
+    font-family: 'Courier New', monospace;
+    margin-left: auto;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── INTRO ─── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+  .intro-block {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-top: 3px solid var(--copper);
+    padding: 16px 18px;
+    border-radius: 2px;
+  }
+  .intro-block label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .intro-block .content {
+    font-size: 12px;
+    color: var(--charcoal);
+    line-height: 1.7;
+  }
+
+  .prose {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--charcoal);
+    margin-bottom: 14px;
+  }
+  .prose strong { color: var(--charcoal); }
+
+  /* ─── PROJECT HIGHLIGHTS ─── */
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .highlight-card {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    padding: 14px 16px;
+    border-radius: 2px;
+    text-align: center;
+  }
+  .highlight-card .hval {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--copper);
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    line-height: 1.1;
+  }
+  .highlight-card .hlabel {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--mid);
+    font-family: 'Courier New', monospace;
+    margin-top: 4px;
+  }
+
+  /* ─── SCOPE TABLE ─── */
+  .scope-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .scope-table thead tr { background: var(--charcoal); }
+  .scope-table thead th {
+    padding: 8px 14px;
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+  }
+  .scope-table thead th.right { text-align: right; }
+  .scope-table tbody tr { border-bottom: 1px solid var(--light-rule); }
+  .scope-table tbody tr:last-child { border-bottom: none; }
+  .scope-table tbody tr:hover { background: #F9F5EC; }
+  .scope-table td { padding: 9px 14px; }
+  .scope-table td.right { text-align: right; font-family: 'Courier New', monospace; font-weight: 600; }
+  .scope-table td.mid { color: var(--mid); font-family: 'Courier New', monospace; font-size: 11px; }
+  .scope-table tr.total-row td { font-weight: 700; background: var(--charcoal); color: var(--cream); border-top: 2px solid var(--copper); }
+  .scope-table tr.total-row td.right { color: var(--copper); font-size: 16px; }
+  .scope-table tr.subtotal-row td { background: #EEE7D4; font-weight: 600; }
+
+  /* ─── SCHEDULE TABLE ─── */
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 120px;
+    border-bottom: 1px solid var(--light-rule);
+    align-items: center;
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-row.header { background: var(--charcoal); }
+  .schedule-row .s-phase {
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .schedule-row.header .s-phase {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+  }
+  .schedule-row.header .s-bar-cell {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+    padding: 9px 14px;
+  }
+  .schedule-row.header .s-dates {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+    padding: 9px 14px;
+    text-align: right;
+  }
+  .s-bar-cell { padding: 9px 14px; }
+  .s-bar-outer {
+    background: var(--oatmeal);
+    border-radius: 2px;
+    height: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-bar-inner {
+    height: 100%;
+    background: var(--copper);
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+  .s-dates {
+    padding: 9px 14px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--mid);
+    text-align: right;
+  }
+  .s-phase .phase-sub {
+    font-size: 10px;
+    color: var(--mid);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  .milestone-row { background: #F4EFE2; }
+  .milestone-row .s-phase { font-weight: 700; color: var(--copper); }
+
+  /* ─── TEAM TABLE ─── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .team-card {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-top: 3px solid var(--copper);
+    padding: 14px 16px;
+    border-radius: 2px;
+  }
+  .team-card .role {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    margin-bottom: 6px;
+  }
+  .team-card .name { font-size: 14px; font-weight: 700; color: var(--charcoal); }
+  .team-card .company { font-size: 11px; color: var(--mid); margin-top: 2px; }
+  .team-card .detail { font-size: 11px; color: var(--dark-mid); margin-top: 8px; line-height: 1.6; }
+
+  /* ─── TERMS TABLE ─── */
+  .terms-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    font-size: 12px;
+  }
+  .terms-table tbody tr { border-bottom: 1px solid var(--light-rule); }
+  .terms-table tbody tr:last-child { border-bottom: none; }
+  .terms-table td { padding: 10px 14px; }
+  .terms-table td.term-label { font-weight: 700; width: 220px; color: var(--charcoal); }
+  .terms-table td.term-value { color: var(--dark-mid); }
+  .terms-table td.term-note { font-size: 11px; color: var(--mid); font-family: 'Courier New', monospace; }
+
+  /* ─── SIGNATURE ─── */
+  .sig-block {
+    background: var(--cream);
+    border: 1px solid var(--light-rule);
+    border-top: 3px solid var(--copper);
+    padding: 24px 28px;
+    margin-bottom: 8px;
+  }
+  .sig-intro {
+    font-size: 13px;
+    color: var(--charcoal);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 16px;
+  }
+  .sig-party label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--copper);
+    font-family: 'Courier New', monospace;
+    display: block;
+    margin-bottom: 32px;
+  }
+  .sig-line {
+    border-bottom: 1px solid var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .sig-party .sig-name { font-size: 12px; font-weight: 600; color: var(--charcoal); }
+  .sig-party .sig-title { font-size: 11px; color: var(--mid); font-family: 'Courier New', monospace; }
+  .sig-party .sig-date-line {
+    margin-top: 20px;
+    border-bottom: 1px solid var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .sig-party .date-label { font-size: 10px; color: var(--mid); font-family: 'Courier New', monospace; }
+
+  /* ─── FOOTER ─── */
+  .doc-footer {
+    background: var(--charcoal);
+    padding: 18px 60px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-top: 44px;
+  }
+  .footer-left { font-size: 11px; color: #9DA2A8; font-family: 'Courier New', monospace; }
+  .footer-center {
+    text-align: center;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--cream);
+    letter-spacing: 2px;
+  }
+  .footer-center .i-copper { color: var(--copper); }
+  .footer-right { text-align: right; font-size: 11px; color: #9DA2A8; font-family: 'Courier New', monospace; }
+  .footer-right strong { color: var(--copper); }
+
+  .callout {
+    background: var(--cream);
+    border-left: 4px solid var(--copper);
+    padding: 14px 18px;
+    border-radius: 2px;
+    font-size: 12px;
+    color: var(--charcoal);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .callout strong { color: var(--copper); }
+
+  @media print {
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-left">
+    <div class="aic-wordmark">A<span class="i-copper">I</span>C</div>
+    <div class="aic-tagline">AI · CONSTRUCTORS</div>
+
+    <div class="cover-divider"></div>
+
+    <div class="cover-title">Guaranteed Maximum Price<br>Proposal</div>
+    <div class="cover-subtitle">Sulphur Springs Public Library<br>Interior Renovation</div>
+    <div class="cover-location">611 N. Davis Street &nbsp;·&nbsp; Sulphur Springs, TX 75482 &nbsp;·&nbsp; PRE-2026-0047</div>
+  </div>
+  <div class="cover-right">
+    <div class="cover-meta-block">
+      <label>GMP Proposal Amount</label>
+      <div class="val price">$2,776,000</div>
+    </div>
+    <div class="cover-meta-block">
+      <label>Submitted To</label>
+      <div class="val">Friends of the Library Inc.</div>
+    </div>
+    <div class="cover-meta-block">
+      <label>Submitted By</label>
+      <div class="val">Cascade Industrial Builders</div>
+    </div>
+    <div class="cover-meta-block">
+      <label>Date of Proposal</label>
+      <div class="val">June 18, 2026</div>
+    </div>
+    <div class="cover-meta-block">
+      <label>Validity Period</label>
+      <div class="val">90 Days — Expires September 18, 2026</div>
+    </div>
+  </div>
+</div>
+<div class="copper-rule"></div>
+
+<!-- ── BODY ── -->
+<div class="body-wrap">
+
+  <!-- PROJECT HIGHLIGHTS -->
+  <div class="highlights" style="margin-bottom:32px; margin-top:0">
+    <div class="highlight-card">
+      <div class="hval">28,400</div>
+      <div class="hlabel">Rentable SF · 3 Floors</div>
+    </div>
+    <div class="highlight-card">
+      <div class="hval">22 wks</div>
+      <div class="hlabel">Jul 14 – Dec 12, 2026</div>
+    </div>
+    <div class="highlight-card">
+      <div class="hval">$97.75</div>
+      <div class="hlabel">Per RSF · All-In GMP</div>
+    </div>
+    <div class="highlight-card">
+      <div class="hval">GMP</div>
+      <div class="hlabel">Contract Type</div>
+    </div>
+    <div class="highlight-card">
+      <div class="hval">Civic</div>
+      <div class="hlabel">Finish Level</div>
+    </div>
+    <div class="highlight-card">
+      <div class="hval">Phase 2</div>
+      <div class="hlabel">Option Reserved</div>
+    </div>
+  </div>
+
+  <!-- 1. INTRODUCTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Executive Summary &amp; Introduction</div>
+      <div class="section-sub">PRE-2026-0047 · Rev 1</div>
+    </div>
+
+    <p class="prose">Cascade Industrial Builders is pleased to submit this Guaranteed Maximum Price (GMP) Proposal for the tenant improvement of the interior renovation of Sulphur Springs Public Library, located at 611 N. Davis Street, Sulphur Springs, Washington. This proposal is submitted in response to the invitation issued by Friends of the Library Inc. on June 4, 2026, and reflects the project scope described in the 100% Schematic Design documents prepared by Lone Star Design Group, dated June 10, 2026.</p>
+
+    <p class="prose">This GMP of <strong>$2,776,000</strong> encompasses all general conditions, trade work, overhead, profit, insurance, bonding, and design contingency required to deliver a complete public library interior tenant improvement across 28,400 rentable square feet. The GMP is based on 100% SD documents; a final GMP confirmation will be issued upon receipt of 100% Construction Documents, currently anticipated July 7, 2026.</p>
+
+    <div class="callout">
+      <strong>Relationship Note:</strong> Cascade Industrial Builders successfully completed Sulphur Springs Library Phase 1 (Floors 7–10) for Friends of the Library Inc. in Q4 2025, delivering on schedule and within budget. This proposal reflects our continued commitment to Friends of the Library's portfolio and our deep familiarity with building systems, base building MEP coordination, and the delivery team that made Phase 1 a success.
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-block">
+        <label>Project Team</label>
+        <div class="content">
+          <strong>Owner:</strong> Friends of the Library Inc.<br>
+          <strong>GC:</strong> Cascade Industrial Builders<br>
+          <strong>Architect:</strong> Lone Star Design Group (TX)<br>
+          <strong>MEP Engineer:</strong> Greenfield Engineering Associates<br>
+          <strong>Structural:</strong> Not in scope (no modifications)
+        </div>
+      </div>
+      <div class="intro-block">
+        <label>Scope Summary</label>
+        <div class="content">
+          Complete demolition and reconstruction of Interior Renovation; durable public-space finishes throughout; new MEP and low-voltage throughout; custom reception millwork; public break-room buildout; aluminum storefront conference glazing; full AV rough-in; bilingual job-site safety protocols per OSHA 300.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SCOPE OF WORK -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Scope of Work &amp; Cost Summary</div>
+      <div class="section-sub">Based on 100% SD · Lone Star Design Group 2026-06-10</div>
+    </div>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th style="width:80px">Division</th>
+          <th>Scope Description</th>
+          <th class="right" style="width:120px">Amount</th>
+          <th class="right" style="width:90px">$/RSF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family:'Courier New',monospace; color:var(--mid); font-size:11px;">01</td>
+          <td>General Requirements — PM, Superintendent, Temp Facilities, Logistics</td>
+          <td class="right">$218,810</td>
+          <td class="right mid">$7.70</td>
+        </tr>
+        <tr>
+          <td class="mid">02</td>
+          <td>Demolition, Selective Demo, Hazmat Abatement Allowance</td>
+          <td class="right">$193,820</td>
+          <td class="right mid">$6.82</td>
+        </tr>
+        <tr>
+          <td class="mid">06/09</td>
+          <td>LGS Framing, GWB, Insulation, Ceilings (ACT + Exposed), Flooring, Paint</td>
+          <td class="right">$566,480</td>
+          <td class="right mid">$19.94</td>
+        </tr>
+        <tr>
+          <td class="mid">08</td>
+          <td>Doors, Frames, Hardware, Aluminum Storefront, Glazing Film</td>
+          <td class="right">$207,920</td>
+          <td class="right mid">$7.32</td>
+        </tr>
+        <tr>
+          <td class="mid">10/12</td>
+          <td>Toilet Accessories, Signage, Kitchen Casework, Reception Millwork</td>
+          <td class="right">$145,900</td>
+          <td class="right mid">$5.14</td>
+        </tr>
+        <tr>
+          <td class="mid">21–28</td>
+          <td>Fire Suppression, Plumbing, HVAC/Controls, Electrical, Data/LV, AV Rough-in, Access Control</td>
+          <td class="right">$1,090,460</td>
+          <td class="right mid">$38.40</td>
+        </tr>
+        <tr class="subtotal-row">
+          <td colspan="2">Direct Construction Subtotal</td>
+          <td class="right">$2,423,390</td>
+          <td class="right mid">$85.33</td>
+        </tr>
+        <tr>
+          <td class="mid"></td>
+          <td>Overhead &amp; Profit (7.5%)</td>
+          <td class="right">$181,754</td>
+          <td class="right mid">$6.40</td>
+        </tr>
+        <tr>
+          <td class="mid"></td>
+          <td>Insurance — Builder's Risk + GL (1.2%)</td>
+          <td class="right">$29,081</td>
+          <td class="right mid">$1.02</td>
+        </tr>
+        <tr>
+          <td class="mid"></td>
+          <td>Payment &amp; Performance Bond (0.85%)</td>
+          <td class="right">$20,599</td>
+          <td class="right mid">$0.73</td>
+        </tr>
+        <tr>
+          <td class="mid"></td>
+          <td>Design Contingency — 5.0% (Level 2 ROM; adjusts on 100% CDs)</td>
+          <td class="right">$121,170</td>
+          <td class="right mid">$4.27</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2">GUARANTEED MAXIMUM PRICE</td>
+          <td class="right">$2,776,000</td>
+          <td class="right">$97.75</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px; color:var(--mid); font-family:'Courier New',monospace; margin-top:8px;">
+      * GMP excludes: Owner permit fees; OFCI items (AV displays, appliances, furniture); structural modifications; design fees. Permit fee allowance of $18,500 available if Owner requests GC to pull permits.
+    </p>
+  </div>
+
+  <!-- 3. PROJECT SCHEDULE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Project Schedule</div>
+      <div class="section-sub">22 Weeks · Jul 14 – Dec 12, 2026</div>
+    </div>
+
+    <div class="schedule-grid">
+      <div class="schedule-row header">
+        <div class="s-phase">Phase / Activity</div>
+        <div class="s-bar-cell">Duration (weeks relative)</div>
+        <div class="s-dates">Dates</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Pre-Construction
+          <div class="phase-sub">Permits, sub buyout, submittals</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:18%; opacity:0.5;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Jul 14 – Aug 1</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Demo &amp; Rough-In
+          <div class="phase-sub">Demo, framing, MEP rough-in all 3 floors</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:32%; margin-left:18%;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Aug 4 – Sep 12</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Inspections &amp; GWB
+          <div class="phase-sub">MEP inspections, GWB hang + finish</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:18%; margin-left:46%;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Sep 15 – Oct 3</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Finish Work
+          <div class="phase-sub">Flooring, doors, ceilings, painting, millwork</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:23%; margin-left:59%;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Oct 6 – Oct 31</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Systems &amp; LV Trim-Out
+          <div class="phase-sub">Fixtures, devices, AV rough, access control</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:18%; margin-left:73%;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Nov 3 – Nov 21</div>
+      </div>
+      <div class="schedule-row">
+        <div class="s-phase">Commissioning &amp; Closeout
+          <div class="phase-sub">HVAC balance, punch, final cleaning, turnover</div>
+        </div>
+        <div class="s-bar-cell">
+          <div class="s-bar-outer">
+            <div class="s-bar-inner" style="width:9%; margin-left:91%; background:#6EAD80;"></div>
+          </div>
+        </div>
+        <div class="s-dates">Nov 24 – Dec 12</div>
+      </div>
+      <div class="schedule-row milestone-row">
+        <div class="s-phase">★ Substantial Completion</div>
+        <div class="s-bar-cell" style="font-family:'Courier New',monospace; font-size:11px; color:var(--mid);">Certificate of Occupancy Anticipated</div>
+        <div class="s-dates" style="color:var(--copper); font-weight:700;">December 12, 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. PROJECT TEAM -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Project Team</div>
+      <div class="section-sub">Cascade Industrial Builders · Key Personnel</div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="role">Project Executive</div>
+        <div class="name">Daniel Reyes</div>
+        <div class="company">Cascade Industrial Builders</div>
+        <div class="detail">16 years renovation experience, Sulphur Springs market. Managed 4 civic renovation projects for Friends of the Library. P.E. (TX). Available for client calls weekly.</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Project Manager</div>
+        <div class="name">Sarah Kowalski</div>
+        <div class="company">Cascade Industrial Builders</div>
+        <div class="detail">PM on Sulphur Springs Library Phase 1. Specializes in occupied public-building renovation. Procore-certified. On site 50% throughout construction.</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Field Superintendent</div>
+        <div class="name">Marcus Thompson</div>
+        <div class="company">Cascade Industrial Builders</div>
+        <div class="detail">22 years field experience, 12 in occupied TI. OSHA 30-hour certified. Bilingual (EN/ES). On-site 100% throughout construction.</div>
+      </div>
+      <div class="team-card">
+        <div class="role">MEP Subcontractor</div>
+        <div class="name">Greenleaf Mechanical Electric</div>
+        <div class="company">Sulphur Springs, TX</div>
+        <div class="detail">6-year preferred subcontractor relationship. MBE-certified. Performed Phase 1 MEP with zero punchlist items at CO.</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Architect of Record</div>
+        <div class="name">Lone Star Design Group</div>
+        <div class="company">Sulphur Springs, TX · AIA</div>
+        <div class="detail">Design architect for Sulphur Springs Library Phase 1 and Phase 2. 100% CDs due July 7, 2026. Weekly OAC coordination confirmed.</div>
+      </div>
+      <div class="team-card">
+        <div class="role">Preconstruction Intelligence</div>
+        <div class="name">Franklin · AIC Platform</div>
+        <div class="company">AI·Constructors · Bothell, WA</div>
+        <div class="detail">AIC Franklin agent provided estimate, bid analysis, schedule baseline, and proposal draft. All outputs reviewed by Mark Ballantine before transmittal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CONTRACT TERMS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Proposed Contract Terms</div>
+      <div class="section-sub">AIA A133 GMP Form · Recommended</div>
+    </div>
+    <table class="terms-table">
+      <tbody>
+        <tr>
+          <td class="term-label">Contract Form</td>
+          <td class="term-value">AIA A133-2019 Standard Form of Agreement (CM at Risk / GMP)</td>
+          <td class="term-note">Phase 1 used identical form</td>
+        </tr>
+        <tr>
+          <td class="term-label">GMP Amount</td>
+          <td class="term-value">$2,776,000 (adjusts to final GMP upon 100% CDs, targeted July 14, 2026)</td>
+          <td class="term-note">±3% variance expected on CDs</td>
+        </tr>
+        <tr>
+          <td class="term-label">Payment Terms</td>
+          <td class="term-value">Net 30 from AIA G702/703 Application; monthly draw schedule</td>
+          <td class="term-note">Phase 1 precedent: 100% on-time</td>
+        </tr>
+        <tr>
+          <td class="term-label">Retainage</td>
+          <td class="term-value">10% through 50% complete; reduces to 5% thereafter per Phase 1 precedent</td>
+          <td class="term-note">Subject to Friends of the Library approval</td>
+        </tr>
+        <tr>
+          <td class="term-label">Liquidated Damages</td>
+          <td class="term-value">$1,200 / calendar day post–December 12, 2026 Substantial Completion date</td>
+          <td class="term-note">Excused: Owner delays, Force Majeure</td>
+        </tr>
+        <tr>
+          <td class="term-label">Escalation Clause</td>
+          <td class="term-value">Material cost adjustments &gt;4% from June 30, 2026 lock date pass through at cost + 5% handling</td>
+          <td class="term-note">Required for GMP acceptance</td>
+        </tr>
+        <tr>
+          <td class="term-label">Change Order Markup</td>
+          <td class="term-value">GC overhead + profit: 10% on subcontracted work; 15% on self-performed work</td>
+          <td class="term-note">Standard market rate</td>
+        </tr>
+        <tr>
+          <td class="term-label">Insurance Requirements</td>
+          <td class="term-value">CGL $2M each occurrence / $4M aggregate; Builder's Risk $3.5M; Workers' Comp statutory WA</td>
+          <td class="term-note">Certificates provided on award</td>
+        </tr>
+        <tr>
+          <td class="term-label">GMP Savings Sharing</td>
+          <td class="term-value">Savings below GMP shared 50/50 Owner / Contractor</td>
+          <td class="term-note">Per AIA A133 Article 5.3</td>
+        </tr>
+        <tr>
+          <td class="term-label">Proposal Validity</td>
+          <td class="term-value">90 calendar days from date of submission — expires September 18, 2026</td>
+          <td class="term-note">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. QUALIFICATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Qualifications, Exclusions &amp; Clarifications</div>
+      <div class="section-sub">Read in conjunction with Estimate EST-2026-0047</div>
+    </div>
+
+    <div class="callout">
+      <strong>Included in GMP:</strong> All general conditions; demolition and hazmat abatement allowance ($22,000); LGS framing and all interior finishes; aluminum storefront glazing; complete MEP systems including HVAC, plumbing rough-in, fire sprinkler extension, power and lighting, structured data cabling, access control, and AV rough-in; kitchen casework (3 units); custom reception millwork; toilet accessories and signage; final cleaning; and a 5% design contingency.
+    </div>
+
+    <div class="callout">
+      <strong>Excluded from GMP:</strong> Owner permit and plan check fees; OFCI items (AV displays, conference room equipment, appliances, furniture); structural modifications or seismic upgrades; any scope outside of Interior Renovation; design fees; escalation beyond June 30, 2026 lock (governed by escalation clause); work resulting from hidden conditions beyond the ACM survey scope.
+    </div>
+
+    <div class="callout">
+      <strong>Key Clarifications:</strong> (1) Working hours are Mon–Fri 7am–5pm; Saturday available with 48-hour notice at no premium charge for first 8 hours per day. (2) GMP is based on 100% SD; Cascade Industrial Builders reserves the right to adjust GMP by up to ±3% upon receipt of 100% CDs. (3) Millwork lead time is 8 weeks from approved submittal — shop drawing approval required by August 15, 2026 to maintain critical path.
+    </div>
+  </div>
+
+  <!-- 7. WHY CASCADE / AIC -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">Why Cascade Industrial Builders</div>
+      <div class="section-sub">Proven Performance · Sulphur Springs Library Portfolio</div>
+    </div>
+
+    <p class="prose">Cascade Industrial Builders brings three distinct competitive advantages to Sulphur Springs Public Library: proven familiarity with this specific building and its base building systems from Phase 1, a demonstrated track record of on-time and on-budget delivery for Friends of the Library, and the AIC preconstruction intelligence platform that allows us to estimate with greater accuracy, flag risks earlier, and deliver a more transparent and auditable GMP than any competitor.</p>
+
+    <p class="prose">We are not simply bidding a job — we are continuing a relationship. The Phase 1 team, including Superintendent Marcus Thompson and MEP subcontractor Greenleaf Mechanical Electric, is available and committed to Phase 2. There is zero learning curve on base building coordination. We know where the conflicts are, we know the building engineer, and we know how to manage three floors of occupied public-building renovation in the heart of Sulphur Springs's CBD.</p>
+
+    <p class="prose">Our preconstruction analysis, supported by the AIC Franklin agent, identified the schedule risk as the single highest-priority concern on this project. We have already taken steps to address it: we have Greenleaf's PM committed to a July 14 mobilization, and we are in active discussions with a second millwork source as a contingency. We tell you this before you ask because we believe transparency is what builds durable relationships.</p>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">Acceptance &amp; Authorization</div>
+      <div class="section-sub">GMP-2026-0047 · AIA A133 Form Recommended</div>
+    </div>
+    <div class="sig-block">
+      <p class="sig-intro">
+        This proposal is submitted in good faith and represents our best estimate of the cost to deliver the Sulphur Springs Public Library Interior Renovation as described herein. This GMP Proposal, when signed by both parties, shall constitute the basis for contract negotiation and the issuance of an AIA A133 Standard Form Agreement. Cascade Industrial Builders is prepared to mobilize within 14 days of contract award.
+      </p>
+
+      <div class="sig-grid">
+        <div class="sig-party">
+          <label>Submitted By — Cascade Industrial Builders</label>
+          <div class="sig-line"></div>
+          <div class="sig-name">Daniel Reyes</div>
+          <div class="sig-title">Project Executive</div>
+          <div class="sig-date-line"></div>
+          <div class="date-label">Date</div>
+        </div>
+        <div class="sig-party">
+          <label>Accepted By — Friends of the Library Inc.</label>
+          <div class="sig-line"></div>
+          <div class="sig-name">Authorized Representative</div>
+          <div class="sig-title">Title</div>
+          <div class="sig-date-line"></div>
+          <div class="date-label">Date</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="doc-footer">
+  <div class="footer-left">
+    PRE-2026-0047 · Rev 1 · 2026-06-18<br>
+    Sulphur Springs Public Library · Friends of the Library Inc.
+  </div>
+  <div class="footer-center">A<span class="i-copper">I</span>C</div>
+  <div class="footer-right">
+    Prepared by <strong>Franklin</strong> · AIC Preconstruction Agent<br>
+    mark.b@ai-constructors.com · ai-constructors.com
+  </div>
+</div>
+
+</body>
+</html>
