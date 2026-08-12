@@ -4,7 +4,7 @@
 if(!document.getElementById("chatLog")) return;
 const DEFAULT_PITCH = `<span class="eyebrow">Pilot program — now selecting</span>
 <h1 class="jw-h1">Run your back office <span class="cu">with AI agents.</span></h1>
-<p>AIC's agents empower you to win, manage, and scale at your pace — not by replacing your people, but by taking the errors and the busywork off their desks and leaving an audit trail behind every call.</p><div class="icp">Built for GCs and specialty contractors — first bid through every stage after.</div><div class="pitch-cta"><a class="btn" href="/pilot.html">Apply for the pilot →</a></div>`;
+<p>AIC's agents empower you to win, manage, and scale at your pace — not by replacing your people, but by taking the errors and the busywork off their desks and leaving an audit trail behind every call.</p><div class="icp">Built for GCs and specialty contractors — first bid through every stage after.</div><div class="pitch-cta"><a class="btn" href="/pricing.html#pilot">Apply for the pilot →</a></div>`;
 
 const ALA  = `<div class="ala">◆ Also available à la carte — <u>see module pricing</u></div>`;
 /* To-Do and PO are platform-only: internal operations, never sold standalone */

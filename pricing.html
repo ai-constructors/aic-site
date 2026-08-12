@@ -292,11 +292,15 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 .wall h3{color:var(--paper);font-size:22px;margin-bottom:10px}
 .wall p{color:rgba(244,239,226,.76);font-size:15px;max-width:74ch;line-height:1.65}
 .wall p+p{margin-top:12px}
-.ttip{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;
-  border:1.5px solid var(--copper);color:var(--copper);font-family:var(--body);font-size:12px;font-weight:700;
-  cursor:help;position:relative;vertical-align:middle;margin-left:7px;background:transparent;font-style:normal;
-  letter-spacing:0;text-transform:none;line-height:1}
-.ttip:hover,.ttip:focus{background:var(--copper);color:#fff;outline:none}
+.ttip{display:inline-block;width:20px;height:20px;border-radius:50%;vertical-align:-4px;margin-left:8px;
+  position:relative;cursor:help;font-size:0!important;line-height:0!important;letter-spacing:0!important;
+  border:1px solid rgba(181,85,47,.55);
+  background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='1.6' r='1.15' fill='%23B5552F'/%3E%3Crect x='3.85' y='3.7' width='2.3' height='5.4' rx='1.15' fill='%23B5552F'/%3E%3C/svg%3E") center / 9px 9px no-repeat;
+  box-shadow:0 1px 2px rgba(52,53,47,.18), inset 0 1px 0 rgba(255,255,255,.9);
+  transition:background-color .14s, box-shadow .14s, transform .1s}
+.ttip:hover,.ttip:focus{background-color:var(--copper);border-color:var(--copper);outline:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Ccircle cx='5' cy='1.6' r='1.15' fill='%23FBF8EF'/%3E%3Crect x='3.85' y='3.7' width='2.3' height='5.4' rx='1.15' fill='%23FBF8EF'/%3E%3C/svg%3E");box-shadow:0 3px 6px rgba(52,53,47,.32);transform:translateY(-1px)}
+.ttip:active{transform:translateY(0);box-shadow:0 1px 2px rgba(52,53,47,.25)}
 .ttip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 11px);left:50%;transform:translateX(-50%);
   width:min(300px,80vw);white-space:normal;overflow-wrap:break-word;background:var(--ink);color:var(--paper);
   font-family:var(--body);font-size:13px;font-weight:400;font-style:normal;
@@ -364,12 +368,12 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <div class="band">
   <div><div class="bn">Start-up</div><div class="bw"><b>We know what the first two years do to a contractor. This is built for that.</b> The work is rarely what kills a new company — the cycle is. Feast, then famine, then a drought long enough to break your nerve, then more work than you can staff. Nobody teaches levelling, so it repeats until the will runs out.</div></div>
   <div class="bl">&nbsp;</div>
-  <div class="bp">$250 + 0.75%<span>per month · capped at $1,500<span class="ttip tl" tabindex="0" data-tip="0.75% of what you actually collect that month — not billed, not booked. Of that, a quarter point retires your onboarding and stops once $2,500 is repaid or two years pass; after that it is $250 + 0.5%. Your total never exceeds $1,500 in a month.">i</span></span></div>
+  <div class="bp">$250 + 0.75%<span>per month · capped at $1,500<span class="ttip tl" tabindex="0" role="button" aria-label="More information" data-tip="0.75% of what you actually collect that month — not billed, not booked. Of that, a quarter point retires your onboarding and stops once $2,500 is repaid or two years pass; after that it is $250 + 0.5%. Your total never exceeds $1,500 in a month.">i</span></span></div>
 </div>
 <div class="band">
   <div><div class="bn">Recovery</div><div class="bw"><b>Built and priced for what comes after the plan.</b> You already know the cycle — you borrowed into it. What is closed now is doors: bonding, financing, a network that remembers. Clean books reopen them. You are not being carried here; you are being backed.</div></div>
   <div class="bl">&nbsp;</div>
-  <div class="bp">$250<span>per month · years 1–2<span class="ttip tl" tabindex="0" data-tip="Flat for two years. From year three it adds 0.5% of that month's collections, capped at $1,500. When your plan closes you move to the Standard rate in force at that time.">i</span></span></div>
+  <div class="bp">$250<span>per month · years 1–2<span class="ttip tl" tabindex="0" role="button" aria-label="More information" data-tip="Flat for two years. From year three it adds 0.5% of that month's collections, capped at $1,500. When your plan closes you move to the Standard rate in force at that time.">i</span></span></div>
 </div>
 <div class="band">
   <div><div class="bn">Standard</div><div class="bw">GC under $15M · specialty &amp; subcontractors under $7M. An established contractor running real work with a back office that is stretched thin.</div></div>
@@ -377,7 +381,7 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
   <div class="bp">$1,500<span>per month</span></div>
 </div>
 <div class="band">
-  <div><div class="bn">Scale</div><div class="bw">GC $15M–$45M · specialty &amp; subcontractors $7M–$19M. Multiple crews, a busy bid desk, up to the SBA small-business ceiling.<span class="ttip" tabindex="0" data-tip="$45M and $19M are not our numbers. They are the SBA receipts-based size standards for commercial building construction (NAICS 236220) and the specialty trades (238xxx) — the same thresholds that decide your small-business set-aside eligibility.">i</span></div></div>
+  <div><div class="bn">Scale</div><div class="bw">GC $15M–$45M · specialty &amp; subcontractors $7M–$19M. Multiple crews, a busy bid desk, up to the SBA small-business ceiling.<span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="$45M and $19M are not our numbers. They are the SBA receipts-based size standards for commercial building construction (NAICS 236220) and the specialty trades (238xxx) — the same thresholds that decide your small-business set-aside eligibility.">i</span></div></div>
   <div class="bl">list<br><a href="#pilot" style="color:var(--copper);text-decoration:underline;text-underline-offset:3px">pilot: $2,800</a></div>
   <div class="bp">$4,000<span>per month</span></div>
 </div>
@@ -390,7 +394,7 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <tr><th>One-time</th><th></th></tr>
 <tr><td>Onboarding — <b>pilot members</b><span style="display:block;color:var(--ink-soft);font-size:13px;margin-top:3px">Diagnostic, cost-code setup, tenant provisioning, data migration</span></td><td>$2,500</td></tr>
 <tr><td>Onboarding — <b>standard</b><span style="display:block;color:var(--ink-soft);font-size:13px;margin-top:3px">The same work, at full price</span></td><td>$7,000</td></tr>
-<tr><td>Onboarding — <b>Start-up and Recovery</b><span class="ttip" tabindex="0" data-tip="Nothing up front. Repaid at a quarter point of what you collect each month until $2,500 is retired or two years pass, whichever comes first. Cancel voluntarily inside those two years and the unpaid balance falls due. If the business closes, it is written off.">i</span><span style="display:block;color:var(--ink-soft);font-size:13px;margin-top:3px">Repaid out of what you collect</span></td><td>$0 up front</td></tr>
+<tr><td>Onboarding — <b>Start-up and Recovery</b><span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="Nothing up front. Repaid at a quarter point of what you collect each month until $2,500 is retired or two years pass, whichever comes first. Cancel voluntarily inside those two years and the unpaid balance falls due. If the business closes, it is written off.">i</span><span style="display:block;color:var(--ink-soft);font-size:13px;margin-top:3px">Repaid out of what you collect</span></td><td>$0 up front</td></tr>
 </table>
 <p class="note">Onboarding is real labour and does not get waived. For a start-up it is also the hardest cheque to write — so it comes out of what you collect instead.</p>
 
@@ -416,10 +420,10 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <tbody>
 <tr><td><span class="an">Meet</span><span class="ad">Contacts, prospects and recruiting — tiered, tracked, and not lost when someone leaves.</span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
 <tr><td><span class="an">Decide</span><span class="ad">Go/No-Go on real bid sources — intake, scoring, and the call to chase it or pass.</span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
-<tr><td><span class="an">PreCon</span><span class="ad">Estimating and proposals — takeoff through a priced, footed proposal ready to send.<span class="ttip" tabindex="0" data-tip="Usually the first one a contractor buys. Point tools charge around $199 per user per month for estimating alone; this covers the whole company and hands the estimate straight into a proposal.">i</span></span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
+<tr><td><span class="an">PreCon</span><span class="ad">Estimating and proposals — takeoff through a priced, footed proposal ready to send.<span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="Usually the first one a contractor buys. Point tools charge around $199 per user per month for estimating alone; this covers the whole company and hands the estimate straight into a proposal.">i</span></span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
 <tr><td><span class="an">PM</span><span class="ad">Field operations and project control — superintendent dailies, jobsite timecards, schedule, subs, change events, billings, award through close-out.</span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
 <tr><td><span class="an">Inspect</span><span class="ad">Job walks, findings and progress reporting from the field, on a phone.</span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
-<tr><td><span class="an">Safety</span><span class="ad">Accident prevention programs, job and activity hazard analyses, daily pre-task plans, training topics, site set-up and auditing.<span class="ttip" tabindex="0" data-tip="On federal and most public work an Accident Prevention Program and activity hazard analyses are contract deliverables, not paperwork you can skip. Safety produces them, keeps them current, and files the daily pre-task plans behind them.">i</span></span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
+<tr><td><span class="an">Safety</span><span class="ad">Accident prevention programs, job and activity hazard analyses, daily pre-task plans, training topics, site set-up and auditing.<span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="On federal and most public work an Accident Prevention Program and activity hazard analyses are contract deliverables, not paperwork you can skip. Safety produces them, keeps them current, and files the daily pre-task plans behind them.">i</span></span></td><td data-l="Start-up / Recovery">$95</td><td data-l="Standard">$450</td><td data-l="Scale">$1,200</td></tr>
 </tbody>
 </table>
 <p class="note" style="margin-top:10px">Pick the ones you want and say so on the call. Pilot members take 30% off these too.</p>
@@ -432,25 +436,26 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <h2 style="margin-top:14px">The founding offer.</h2>
 
 <div class="founding">
-<h3>30% off list, locked for as long as you stay.<span class="ttip" tabindex="0" data-tip="The rate you join at is the rate you keep, through every price rise that follows. No expiry date. It belongs to a continuous subscription — cancel and return later and you come back at list.">i</span></h3>
-<p>Pilot members take 30% off every price on this page — platform and agents — and the rate you join at is the rate you keep, through every increase that follows. There is no expiry on it. Onboarding drops from $7,000 to $2,500 on top. The pilot itself runs <b>three months</b> from go-live, then simply continues at your founding rate. Nothing auto-escalates.</p>
+<h3>30% off list, held for three years.<span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="Three years from go-live at the rate you joined at, through any price rise in between. It belongs to a continuous subscription — cancel and return later and you come back at list.">i</span></h3>
+<p>Pilot members take 30% off every price on this page — platform and agents — held for <b>three years</b> from go-live, through any increase in between. Onboarding drops from $7,000 to $2,500 on top. The pilot itself runs <b>three months</b>, then simply continues at your founding rate. Nothing auto-escalates.</p>
 <div class="fr">
   <div>Standard, founding<b>$1,050/mo</b></div>
   <div>Scale, founding<b>$2,800/mo</b></div>
   <div>Single agent, Standard<b>$315/mo</b></div>
   <div>Onboarding saving<b>$4,500</b></div>
 </div>
-<p style="margin-top:16px;font-size:14px;color:var(--ink-soft)"><b>First year, Standard band:</b> $5,400 off the subscription plus $4,500 off onboarding — <b>$9,900</b> — and the subscription saving repeats every year you stay.</p>
+<p style="margin-top:16px;font-size:14px;color:var(--ink-soft)"><b>Standard band, over the three years:</b> $16,200 off the subscription plus $4,500 off onboarding — <b>$20,700</b>.</p>
 </div>
 
 <div class="hi" style="border-left-color:var(--ink);background:var(--card)">
 <h3>The founding rate is not for the Start-up and Recovery bands.</h3>
-<p>They already sit at $250 against a $1,500 list — deeper than the pilot discount, delivered as a band instead of a concession. No pilot rate, no exclusive slot. Reach the Standard band and you become eligible for a founding slot if one is still open in your market.</p>
+<p>They already sit at $250 against a $1,500 list — deeper than the pilot discount, delivered as a band instead of a concession. Reach the Standard band and you become eligible to join the pilot if the cohort is still open.</p>
 </div>
 
 <div class="hi" style="border-left-color:var(--ink);background:var(--card)">
-<h3>One slot per market.<span class="ttip" tabindex="0" data-tip="Your agreement names the slot by discipline, segment and locality. It is held against anyone else in that market while you are a client, and released when you leave.">i</span></h3>
-<p>A pilot is a reserved deployment slot, named by discipline, segment and locality — and AIC never admits two contractors into the same one. If you take the slot for your trade in your market, your competitor down the road cannot have it. That is not a scarcity tactic; it is how we avoid sitting on both sides of the same bid.</p>
+<h3>Your name stays on it.<span class="ttip" tabindex="0" role="button" aria-label="More information" data-tip="Recognition runs for as long as your account is in good standing — subscription current and nothing outstanding. It does not lapse when the three-year rate does.">i</span></h3>
+<p>Pilot members are listed as <b>Members</b> on the AIC site and across our social channels, in a standing display that links straight through to your own website. The first contractor in carries the <b>Pathfinder</b> designation. It costs nothing and runs as long as your account is in good standing. <b>Being listed is your choice</b> — stay unnamed if you prefer, at no cost to anything else you get.</p>
+<p style="margin-top:12px">Alongside it we publish what members actually say — <b>including the criticism</b>, with what we changed and the member's confirmation that we fixed it.</p>
 </div>
 
 <div class="two" style="margin-top:30px">
@@ -458,10 +463,10 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <div class="kicker">What you get</div>
 <div class="inc">
 <div><span class="mk">→</span><span><b>The whole platform</b> on your real work — live bids, live jobs, not a sandbox.</span></div>
-<div><span class="mk">→</span><span><b>Your slot,</b> held against anyone else in your discipline and market.</span></div>
-<div><span class="mk">→</span><span><b>30% off list, locked</b> for as long as the subscription runs.</span></div>
+<div><span class="mk">→</span><span><b>30% off list</b> for three years from go-live.</span></div>
+<div><span class="mk">→</span><span><b>Member listing</b> on our site and social channels, linked to yours, for as long as your account is in good standing — <b>if you want it.</b></span></div>
 <div><span class="mk">→</span><span><b>Onboarding at $2,500</b> — diagnostic, cost codes, provisioning, migration.</span></div>
-<div><span class="mk">→</span><span><b>Direct access</b> to the people building it, and real influence over what ships next.</span></div>
+<div><span class="mk">→</span><span><b>Direct access</b> to the people building it.</span></div>
 <div><span class="mk">→</span><span><b>Your own tenant.</b> Isolated environment; your data never touches another client's.</span></div>
 </div>
 </div>
@@ -472,6 +477,7 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <div><span class="mk">→</span><span><b>Tell us the truth</b> on a set cadence — a 30-minute call every two weeks — about what helps and what doesn't.</span></div>
 <div><span class="mk">→</span><span><b>Access under NDA</b> to the workflows the agents touch, so we deploy them properly.</span></div>
 <div><span class="mk">→</span><span><b>Let us cite results</b> anonymously — figures, never your name. Opt out and keep the rate.</span></div>
+<div><span class="mk">→</span><span><b>A note in writing</b> when you onboard and again at 90 days — what worked and what didn't. You can decline either one.</span></div>
 <div><span class="mk">→</span><span><b>Patience with an early platform,</b> and credit for shaping a good one.</span></div>
 </div>
 </div>
@@ -479,14 +485,16 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 
 <h3 style="margin-top:42px;font-size:21px">The rules, plainly.</h3>
 <ol class="rules">
-<li><b>The slot.</b> Your agreement names it — discipline, segment, locality. It is yours while you are a client and released when you leave.</li>
 <li><b>Your band.</b> Set by annual revenue at signing and revisited once a year. Growing mid-year does not change this year's invoice.</li>
 <li><b>Start-up band.</b> Your first two years, then the band your revenue puts you in.</li>
 <li><b>Recovery band.</b> Runs alongside your plan. Flat for two years; from year three it adds 0.5% of collections, capped at the Standard rate. <b>When the plan closes you move to the Standard rate in force at that time.</b> We will ask for something that shows you qualify — neither band is a discount you can simply request.</li>
-<li><b>Deferred onboarding.</b> If you started with no onboarding fee, the balance clears at 0.25% of collections until $2,500 is retired or two years pass. Cancel voluntarily inside those two years and the unpaid balance falls due. If the business closes, it is written off — we are not chasing a contractor who did not make it.</li>
+<li><b>Deferred onboarding.</b> Governed by your written agreement. The balance clears at 0.25% of collections until $2,500 is retired or two years pass. Cancel voluntarily inside those two years and the unpaid balance falls due. If the business closes, it is written off — we are not chasing a contractor who did not make it.</li>
+<li><b>Start-up and Recovery are by application.</b> Each is set up under its own written agreement, scoped to your circumstances, and <b>AIC may decline any application</b>. If we do, the à-la-carte agents remain open to you at the same banded pricing.</li>
+<li><b>Testimonials.</b> We ask every member on a concessionary rate — Pathfinder, Pilot, Start-up and Recovery — for a short written note at onboarding and again at 90 days. Either is optional. We choose what to publish, and <b>nothing carrying your name, mark or company goes out without your written approval</b>, in the exact form it will appear. <b>We publish criticism too</b> — what a member told us we got wrong, what we changed, and their confirmation that it was put right. Everything we publish will be factual.</li>
+<li><b>Member recognition</b> runs while your account is in good standing — subscription current, nothing outstanding. <b>You may stay incognito;</b> nothing else changes if you do. It is a listing and a link, not an endorsement of your work, and either side can ask for it to come down at any time.</li>
 <li><b>Term.</b> The pilot runs three months from go-live, then continues month to month at your founding rate. Nothing auto-escalates and nothing auto-upgrades your band.</li>
 <li><b>No lock-in.</b> Cancel any time with 30 days’ written notice. You are billed through the notice period and not beyond it.</li>
-<li><b>Losing the rate.</b> The founding rate belongs to a continuous subscription. Cancel and come back later and you return at list. A missed payment does not cost you the rate on its own — you have 15 days to clear it, and only an uncured default ends it.</li>
+<li><b>Losing the rate.</b> The founding rate belongs to a continuous subscription and runs three years from go-live. Cancel and come back later and you return at list. A missed payment does not cost you the rate on its own — you have 15 days to clear it, and only an uncured default ends it.</li>
 <li><b>One number.</b> The subscription is the whole recurring charge. No usage surcharge, no overage line, no automatic band bump.</li>
 <li><b>Onboarding is not refundable.</b> It is work performed. If you leave, you leave with a configured, exported set of records.</li>
 <li><b>Your data.</b> You own it. Your tenant is isolated. We process it to run your agents and nothing else, you can export it in standard formats at any time including on the way out, and we delete on request.</li>
@@ -507,10 +515,11 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 <div class="faq-a">Yes, and that is the trade for a simple price. If your operation genuinely sits between the two, say so on the call — we would rather size you right than watch you leave in month six.</div>
 <div class="faq-q">Do the two revenue lines mean specialty contractors pay more?</div>
 <div class="faq-a">The opposite. A specialty contractor doing $6M carries about the same estimating, purchasing and field load as a GC doing $14M, so they land in the same band at less than half the revenue. Splitting the line is what keeps that fair.</div>
-<div class="faq-q">Is there a cheaper way to try it?</div>
-<div class="faq-a">Yes. The instant estimate runs $18 with no account and no subscription. It is one deliverable rather than the platform, but it is real output from the real system.</div>
+
+<div class="faq-q">Do you only publish the good reviews?</div>
+<div class="faq-a">No. We ask every member on a concessionary rate for a written note at onboarding and at 90 days, and we deliberately publish some of the criticism — what we got wrong, what we changed, and the member confirming it was fixed. A wall of praise tells a contractor nothing. And for every person who complains there are several who said nothing, tolerated it, built up resentment and quietly left. We would rather hear it and fix it.</div>
 <div class="faq-q">What happens when the pilot ends?</div>
-<div class="faq-a">You stop reporting on a schedule and go about your business. Your rate is locked, your slot is held, your data is where you left it. We would welcome the dialogue continuing, but we do not require it — and you go up on the <b>Founding Contractors board</b>, with your name on the platform you helped shape, if you want it there.</div>
+<div class="faq-a">You stop reporting on a schedule and go about your business. Your rate runs on, your data is where you left it. We would welcome the dialogue continuing but we do not require it — and your listing stays up for as long as your account is in good standing.</div>
 </div></section>
 
 <section class="block"><div class="wrap reveal">
@@ -524,8 +533,8 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
 
 <section class="cta-band"><div class="wrap reveal">
 <span class="eyebrow" style="justify-content:center">Founding cohort</span>
-<h2>Check whether your slot is open.</h2>
-<p>One contractor per discipline, per market. Tell us your trade and where you work and we will tell you straight.</p>
+<h2>The founding cohort is open.</h2>
+<p>Thirty percent for three years, onboarding at a third, and your name on our site. Tell us where you are and we will tell you straight which band fits.</p>
 <a class="btn" href="/contact.html">Talk to us →</a>
 </div></section>
 
