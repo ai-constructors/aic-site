@@ -1795,7 +1795,7 @@ function renderDOCS(){
 }
 
 /* ================= SAFETY — accident prevention, AHAs, pre-task plans, training, audits. ALL DATA FICTITIOUS. ================= */
-const SAF = { tab:'dash', open:{}, ahaOpen:false };
+const SAF = { tab:'dash', open:{} };
 const SAF_TABS = [['dash','&#128202; Overview'],['pretask','&#128203; Pre-Task Plans'],['aha','&#128218; AHA Library'],
   ['training','&#127891; Training'],['audit','&#128269; Site Audits']];
 
@@ -1881,38 +1881,77 @@ function safAhaBody(){
     return '<tr><td class="nm">'+nameCell+'</td><td>'+racChip(r[1])+'</td><td class="mono">'+r[2]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td>'+
     '<td><span class="fst '+(overdue?'wn':'ok')+'">'+r[6]+'</span></td></tr>';}).join('')+'</tbody></table>'+
   '<div class="fnote">RAC = severity &times; probability (USACE EM 385-1-1). Every AHA carries the competent person\'s sign-off and a 12-month review clock — Jeeves flags it before it lapses, same as the crane-picks entry above.</div>'+
-  (SAF.ahaOpen
-    ? '<div class="fsec">AHA 09 — Excavation, Trenching &amp; Spoil Export · Fairhaven Lift Station 2</div>'+
-      '<button class="dc-hint" data-saf="aha:open" style="cursor:pointer;background:none;border:none;padding:0">&#9652; Hide — back to the library list</button>'+
-      safAhaSample()
-    : '<div class="dc-hint" style="margin-top:4px">&#9656; Click &ldquo;Excavation &amp; trenching&rdquo; above to see the actual AHA Jeeves generates — full RAC matrix, job steps and controls.</div>');
+  '<div class="dc-hint" style="margin-top:4px">&#9656; Click &ldquo;Excavation &amp; trenching&rdquo; above to open the actual document Jeeves generates.</div>';
 }
-function safRacMatrix(){
-  const rows=[['Catastrophic','E','E','H','H','M'],['Critical','E','H','H','M','L'],
-    ['Marginal','H','M','M','L','L'],['Negligible','M','L','L','L','L']];
-  return '<table class="ftbl" style="max-width:420px"><thead><tr><th>Severity \\ Prob.</th><th>Frequent</th><th>Likely</th><th>Occas.</th><th>Seldom</th><th>Unlikely</th></tr></thead><tbody>'+
-  rows.map(function(r){return '<tr><td class="nm">'+r[0]+'</td>'+r.slice(1).map(function(v){return '<td>'+racChip(v)+'</td>';}).join('')+'</tr>';}).join('')+
-  '</tbody></table>';
+/* ---- AHA 09 pop-out — rendered to match the real AHA library PDF's layout, not the mini
+   app chrome. Data-only const so it's easy to swap in a second wired example later. ---- */
+const AHA_STEPS=[
+  ['Pre-excavation utility locate &amp; permit','Struck utility, electrocution, gas release','Locate service called 48 hrs prior; hand-dig within 24&quot; of marked lines; excavation permit posted at site','M'],
+  ['Excavation &amp; spoil placement','Cave-in, engulfment','Competent person inspects daily and after any rain or vibration event; spoil kept 2ft+ from edge; protective system sized to soil classification','H'],
+  ['Trench entry (&gt;4ft)','Cave-in, atmospheric hazard','No entry without an approved protective system; atmosphere tested before entry if hazard suspected; ladder within 25ft of every worker','H'],
+  ['Edge protection &amp; access control','Fall-in, struck-by from mobile equipment','Barricade or fence all open trenches; physical barrier at every edge; dedicated spotter for equipment operating near the edge','M'],
+  ['Backfill &amp; compaction','Struck-by compaction equipment, collapse during backfill','Ground guide required; no personnel in the trench during mechanized backfill','M']
+];
+const AHA_RAC_MATRIX=[['Catastrophic','E','E','H','H','M'],['Critical','E','H','H','M','L'],
+  ['Marginal','H','M','M','L','L'],['Negligible','M','L','L','L','L']];
+function racCell(v){ return '<td class="jwaha-r'+v+'">'+v+'</td>'; }
+function AHA_DOC_HTML(){
+  return '<div class="jwaha-topbar"></div>'+
+  '<button class="jwaha-x" data-saf="aha:close" aria-label="Close">&#10005;</button>'+
+  '<div class="jwaha-title"><h2>AHA 09 &nbsp;|&nbsp; Excavation, Trenching &amp; Spoil Export</h2>'+
+    '<div class="rac"><span class="l">Overall RAC</span><span class="v">H</span></div></div>'+
+  '<div class="jwaha-body">'+
+    '<div class="jwaha-toprow">'+
+      '<div class="jwaha-meta">'+
+        '<div><span>Company</span><span>Cornerstone Structural Group</span></div>'+
+        '<div><span>Project / Location</span><span>Fairhaven Lift Station 2 &middot; Fairhaven, WA</span></div>'+
+        '<div><span>Contract No.</span><span>FLS26-114</span></div>'+
+        '<div><span>Date Prepared</span><span>8/19/2026</span></div>'+
+        '<div><span>Activity / Work Task</span><span>Excavation, Trenching &amp; Spoil Export</span></div>'+
+      '</div>'+
+      '<div class="jwaha-matrix"><table><thead><tr><th>Severity \\ Prob.</th><th>Freq.</th><th>Likely</th><th>Occas.</th><th>Seldom</th><th>Unlikely</th></tr></thead><tbody>'+
+        AHA_RAC_MATRIX.map(function(r){return '<tr><td>'+r[0]+'</td>'+r.slice(1).map(racCell).join('')+'</tr>';}).join('')+
+      '</tbody></table></div>'+
+    '</div>'+
+    '<div class="jwaha-ppe"><b>Baseline PPE:</b> hard hat (ANSI Z89.1); ANSI Z87.1 safety glasses with side shields; high-visibility Class 2 vest/clothing; cut-resistant gloves; ankle-high leather work boots; long pants and sleeved shirt in good repair. Task-specific PPE added per step below.</div>'+
+    '<div class="jwaha-h4">Job Steps, Hazards &amp; Controls</div>'+
+    '<table class="jwaha-steps"><thead><tr><th>Job Steps (Work Sequence)</th><th>Specific Anticipated Hazards</th><th>Controls / Mitigation</th><th>RAC</th></tr></thead><tbody>'+
+      AHA_STEPS.map(function(s){return '<tr><td>'+s[0]+'</td><td>'+s[1]+'</td><td>'+s[2]+'</td>'+racCell(s[3])+'</tr>';}).join('')+
+    '</tbody></table>'+
+    '<div class="jwaha-h4">Equipment, Training, Competent Person &amp; Inspection</div>'+
+    '<table class="jwaha-eq"><thead><tr><th>Equipment to be Used</th><th>Training Requirement</th><th>Competent / Qualified Person(s)</th><th>Inspection Requirement</th></tr></thead><tbody>'+
+      '<tr><td>Trench box / shoring system</td><td>Competent person — excavation</td><td>D. Prentiss</td><td>Daily, before entry and after rain or vibration</td></tr>'+
+      '<tr><td>Excavator, spoil trailers</td><td>Equipment operator certification</td><td>Crew lead</td><td>Pre-use walk-around</td></tr>'+
+    '</tbody></table>'+
+    '<div class="jwaha-std"><b>Applicable standards:</b> 29 CFR 1926 Subpart P (.650&ndash;.652); 29 CFR 1926.651 (utilities, atmosphere, egress); EM 385-1-1 &sect;25 (excavation).</div>'+
+    '<div class="jwaha-h4">Review &amp; Signatures</div>'+
+    '<table class="jwaha-sig">'+
+      ['SSHO Signature','Superintendent','QC Manager','Subcontractor Foreman','Crew Acknowledgement'].map(function(role){
+        return '<tr><td>'+role+'</td><td>&nbsp;</td><td>Date</td></tr>';}).join('')+
+    '</table>'+
+  '</div>'+
+  '<div class="jwaha-foot"><span>Cornerstone Structural Group &middot; Activity Hazard Analysis Library</span>'+
+    '<span>Reviewed by Jeeves &mdash; USACE EM 385-1-1 format</span><span>Page 1</span></div>';
 }
-function safAhaSample(){
-  const steps=[
-    ['Pre-excavation utility locate &amp; permit','Struck utility, electrocution, gas release','Locate service called 48 hrs prior; hand-dig within 24&quot; of marked lines; excavation permit posted at site','M'],
-    ['Excavation &amp; spoil placement','Cave-in, engulfment','Competent person inspects daily and after any rain or vibration event; spoil kept 2ft+ from edge; protective system sized to soil classification','H'],
-    ['Trench entry (&gt;4ft)','Cave-in, atmospheric hazard','No entry without an approved protective system; atmosphere tested before entry if hazard suspected; ladder within 25ft of every worker','H'],
-    ['Edge protection &amp; access control','Fall-in, struck-by from mobile equipment','Barricade or fence all open trenches; physical barrier at every edge; dedicated spotter for equipment operating near the edge','M'],
-    ['Backfill &amp; compaction','Struck-by compaction equipment, collapse during backfill','Ground guide required; no personnel in the trench during mechanized backfill','M']
-  ];
-  return '<div class="ex-card"><h3>AHA 09 &mdash; Excavation, Trenching &amp; Spoil Export</h3>'+
-  '<div class="ex-note" style="margin:0 0 8px">Baseline PPE: hard hat, ANSI Z87.1 safety glasses, hi-vis Class 2 vest, cut-resistant gloves, steel-toe boots. Task-specific PPE added per step below.</div>'+
-  safRacMatrix()+
-  '<table class="ex-table" style="margin-top:8px"><tr><th>Job step</th><th>Anticipated hazard</th><th>Controls / mitigation</th><th>RAC</th></tr>'+
-  steps.map(function(s){return '<tr><td>'+s[0]+'</td><td>'+s[1]+'</td><td>'+s[2]+'</td><td>'+racChip(s[3])+'</td></tr>';}).join('')+
-  '</table>'+
-  '<table class="ftbl" style="margin-top:8px"><thead><tr><th>Equipment</th><th>Training</th><th>Competent person</th><th>Inspection</th></tr></thead><tbody>'+
-  '<tr><td>Trench box / shoring system</td><td>Competent person — excavation</td><td>D. Prentiss</td><td>Daily, before entry and after rain or vibration</td></tr>'+
-  '</tbody></table>'+
-  '<div class="ex-note">Overall RAC: '+racChip('H')+' &nbsp;·&nbsp; Standard: 29 CFR 1926 Subpart P (.650–.652), .651 (utilities, atmosphere, egress). Reviewed and signed by crew before first entry. Fictitious sample data.</div></div>';
+function openAhaDoc(){
+  closeAhaDoc();
+  const ov=document.createElement('div');
+  ov.className='jwaha-ov'; ov.id='jwahaOv';
+  ov.innerHTML='<div class="jwaha-sheet">'+AHA_DOC_HTML()+'</div>';
+  ov.addEventListener('click',function(e){ if(e.target===ov) closeAhaDoc(); });
+  document.body.appendChild(ov);
+  document.addEventListener('keydown',ahaEscHandler);
 }
+function closeAhaDoc(){
+  const ov=document.getElementById('jwahaOv');
+  if(ov) ov.remove();
+  document.removeEventListener('keydown',ahaEscHandler);
+}
+function ahaEscHandler(e){ if(e.key==='Escape') closeAhaDoc(); }
+document.addEventListener('click',function(e){
+  const t=e.target.closest('[data-saf="aha:close"]');
+  if(t) closeAhaDoc();
+});
 const SAF_TRAIN = [
   ['OSHA 10 — all field staff','Annual refresher','100%','—'],
   ['Competent person — excavation','Per assignment','100%','—'],
@@ -2184,8 +2223,8 @@ workScreen.addEventListener('click', (e)=>{
     const v = saf.dataset.saf, q = v.split(':');
     if (q[0]==='tab') { SAF.tab=q[1]; renderSafety(); return; }
     if (q[0]==='sec') { SAF.open[q[1]]=!SAF.open[q[1]]; renderSafety(); return; }
-    if (q[0]==='aha' && q[1]==='open') { SAF.ahaOpen=!SAF.ahaOpen; renderSafety();
-      if (SAF.ahaOpen) addBubble('Opened AHA 09 — the full RAC matrix, job steps and controls Jeeves generates for excavation work.');
+    if (q[0]==='aha' && q[1]==='open') { openAhaDoc();
+      addBubble('Opened AHA 09 — the full RAC matrix, job steps and controls Jeeves generates for excavation work.');
       return; }
   }
   const ins = e.target.closest('[data-ins]');

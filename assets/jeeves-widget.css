@@ -930,4 +930,61 @@ table.rmeta{width:100%;border-collapse:collapse;font-size:8.5px;margin-bottom:8p
 .jw-scope .pmm-cal{margin-top:9px;padding:8px 10px;border-radius:7px;background:rgba(168,117,43,.12);border-left:3px solid var(--warn)}
 .jw-scope .pmm-cal b{display:block;font-size:10px;color:var(--warn);margin-bottom:2px}
 .jw-scope .pmm-cal span{font-size:9.5px;line-height:1.45;color:var(--ink-soft)}
+
+/* ================= AHA document pop-out — styled as a rendered page, not the mini app chrome.
+   Appended directly to <body> (not inside .jw-scope), so it's fully self-contained: its own
+   font stack and colors, no dependency on the widget's --ink/--copper vars. Navy is a generic
+   corporate-safety-document navy, deliberately not LAMB's documented brand navy (#003974) or
+   AIC's own copper/ink palette -- this is a fictional company's document, not either firm's brand. ================= */
+.jwaha-ov{position:fixed;inset:0;background:rgba(20,24,32,.62);z-index:9999;display:flex;
+  align-items:flex-start;justify-content:center;padding:28px 16px;overflow-y:auto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.jwaha-sheet{background:#fff;width:100%;max-width:880px;border-radius:3px;box-shadow:0 24px 60px rgba(0,0,0,.35);
+  overflow:hidden;position:relative}
+.jwaha-topbar{height:8px;background:#1B3A5C}
+.jwaha-x{position:absolute;top:14px;right:16px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);
+  color:#fff;border:none;font-size:16px;line-height:1;cursor:pointer;z-index:2}
+.jwaha-x:hover{background:rgba(255,255,255,.28)}
+.jwaha-title{background:#1B3A5C;color:#fff;padding:14px 54px 14px 22px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:8px}
+.jwaha-title h2{font-size:17px;font-weight:700;margin:0}
+.jwaha-title .rac{background:rgba(255,255,255,.14);border-radius:5px;padding:5px 11px;text-align:center}
+.jwaha-title .rac .l{display:block;font-size:8px;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.jwaha-title .rac .v{display:block;font-size:18px;font-weight:800}
+.jwaha-body{padding:20px 22px 8px;color:#22262c}
+.jwaha-toprow{display:grid;grid-template-columns:1.1fr 1.4fr;gap:14px;margin-bottom:12px}
+@media(max-width:620px){.jwaha-toprow{grid-template-columns:1fr}}
+.jwaha-meta{border:1px solid #d3d8de;border-radius:4px;overflow:hidden;font-size:12px}
+.jwaha-meta div{display:flex;border-bottom:1px solid #e6e9ed}
+.jwaha-meta div:last-child{border-bottom:none}
+.jwaha-meta span:first-child{flex:0 0 118px;background:#f4f6f8;padding:6px 8px;font-weight:700;color:#44494f}
+.jwaha-meta span:last-child{flex:1;padding:6px 8px;color:#44494f}
+.jwaha-matrix{border:1px solid #d3d8de;border-radius:4px;overflow:hidden}
+.jwaha-matrix table{width:100%;border-collapse:collapse;font-size:10.5px}
+.jwaha-matrix th{background:#1B3A5C;color:#fff;padding:5px 4px;font-weight:700;text-align:center}
+.jwaha-matrix th:first-child{text-align:left;padding-left:7px}
+.jwaha-matrix td{padding:5px 4px;text-align:center;border-top:1px solid #e6e9ed;font-weight:700;color:#fff}
+.jwaha-matrix td:first-child{text-align:left;padding-left:7px;background:#f4f6f8;color:#44494f;font-weight:700}
+.jwaha-rE{background:#C0392B}.jwaha-rH{background:#E07B27}.jwaha-rM{background:#E8B93B}.jwaha-rL{background:#4C9A5B}
+.jwaha-ppe{font-size:11.5px;line-height:1.55;color:#44494f;background:#f4f6f8;border:1px solid #e6e9ed;border-radius:4px;
+  padding:8px 10px;margin-bottom:14px}
+.jwaha-h4{font-size:11px;font-weight:800;letter-spacing:.3px;color:#1B3A5C;text-transform:uppercase;margin:14px 0 6px}
+.jwaha-steps{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:6px}
+.jwaha-steps th{background:#1B3A5C;color:#fff;padding:7px 8px;text-align:left;font-weight:700}
+.jwaha-steps th:last-child,.jwaha-steps td:last-child{text-align:center;width:46px}
+.jwaha-steps td{padding:8px;border-bottom:1px solid #e6e9ed;vertical-align:top;color:#33383e}
+.jwaha-steps td.rac{font-weight:800;color:#fff}
+.jwaha-eq{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:10px}
+.jwaha-eq th{background:#eef1f4;color:#33383e;padding:6px 8px;text-align:left;font-weight:700;border-bottom:1px solid #d3d8de}
+.jwaha-eq td{padding:7px 8px;border-bottom:1px solid #e6e9ed;color:#44494f}
+.jwaha-std{font-size:10.5px;color:#5a6068;margin-bottom:12px}
+.jwaha-std b{color:#33383e}
+.jwaha-sig{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px}
+.jwaha-sig td{padding:7px 8px;border-bottom:1px solid #e6e9ed}
+.jwaha-sig td:first-child{font-weight:700;color:#33383e;width:34%}
+.jwaha-sig td:nth-child(2){border-bottom:1px solid #c7ccd2}
+.jwaha-sig td:last-child{width:120px;color:#8a9099;font-size:10px}
+.jwaha-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;font-size:9px;color:#8a9099;
+  border-top:1px solid #e6e9ed;padding:9px 22px 14px}
+@media(max-width:560px){.jwaha-title h2{font-size:14px}.jwaha-toprow{gap:10px}}
 @media(max-width:640px){.jw-scope .pmm-l{flex:0 0 64px;font-size:9px}}
