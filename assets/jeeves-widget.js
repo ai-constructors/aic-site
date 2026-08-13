@@ -566,7 +566,7 @@ function DOC_SCHEDULE(){
 
 /* ================= DECIDE — multi-state module. ALL DATA FICTITIOUS. ================= */
 const DEC = {
-  view:'dash', calSel:null, pcTab:0, pcSplit:58, hiliTab:'input', hiliOpen:{}, outDoc:'est', schMonth:1, dwgPage:1, dwgZoom:100, showCz:true
+  view:'dash', calSel:null, pcTab:0, pcSplit:58, hiliTab:'input', hiliOpen:{}, outDoc:'est', schMonth:1, dwgPage:1, dwgZoom:100, showCz:true, standalone:false
 };
 
 const GO_CARDS = [
@@ -877,7 +877,7 @@ function PRECON(output){
   return '<div class="pc-hd"><div><div class="t">PreCon</div>'+
     '<div class="s">Jeeves module &middot; Document viewer &middot; HILI window</div></div>'+
     '<div class="dc-hd-r"><span class="dc-pill">C001-DEMO</span><span class="dc-pill">Refresh</span>'+
-    '<button class="dc-pill act" data-back="1">&larr; Back</button></div></div>'+
+    (DEC.standalone?'':'<button class="dc-pill act" data-back="1">&larr; Back</button>')+'</div></div>'+
   '<div class="pc-ttl">Larkspur Commerce Center — Building B Addition</div>'+
   '<div class="pc-meta"><span class="go">go</span><span class="id">BID-SPLIT-20260808-409B</span>'+
   '<span class="cls">AACE Class 5 (conceptual) unless a design set says otherwise</span></div>'+
@@ -912,18 +912,20 @@ function decideBody(){
 }
 const DECIDE_CRUMB={dash:'Decide · Go/No-Go', intake:'Decide · Intake detail', go:'Decide · Go / Outcome',
   precon:'Decide · PreCon workspace', 'precon-out':'Decide · PreCon · Output'};
+const PRECON_CRUMB={precon:'PreCon workspace', 'precon-out':'PreCon · Output'};
 
 function renderDecide(){
-  const a=AGENT_PITCH.decide;
+  const a = DEC.standalone ? AGENT_PITCH.precon : AGENT_PITCH.decide;
+  const eyebrow = DEC.standalone ? 'PreCon' : 'Decide';
   const wide = DEC.view==='precon'||DEC.view==='precon-out';
-  setWork('<span class="eyebrow">Decide</span><h2>'+a.h+'</h2><p>'+a.p+'</p>'+ALA+
-    '<div class="mp-cap"><span class="l">'+(wide?'PreCon workspace':'What Decide opens to')+'</span>'+
+  setWork('<span class="eyebrow">'+eyebrow+'</span><h2>'+a.h+'</h2><p>'+a.p+'</p>'+ALA+
+    '<div class="mp-cap"><span class="l">'+(wide?'PreCon workspace':'What '+eyebrow+' opens to')+'</span>'+
     '<span class="r">'+(wide?'Level 3 · resizable':'Live module · miniaturized')+'</span></div>'+
     '<div class="mp"><div class="mp-hd"><div class="mp-logo">AIC</div>'+
     '<div class="mp-hd-ic"><i>&#128101;</i><i>&#9673;</i><i>&#128247;</i><i>i</i><i>&#8645;</i><i>&#9790;</i></div></div>'+
     '<div class="mp-body">'+decideBody()+'</div>'+
     '<div class="mp-sync"><span class="d"></span>synced</div></div>',
-    DECIDE_CRUMB[DEC.view]||'Decide');
+    DEC.standalone ? (PRECON_CRUMB[DEC.view]||'PreCon') : (DECIDE_CRUMB[DEC.view]||'Decide'));
 }
 
 /* ================= INSPECT — field walk app. ALL DATA FICTITIOUS. ================= */
@@ -1792,6 +1794,140 @@ function renderDOCS(){
   setWork('<span class="eyebrow">Docs</span><h2>'+a.h+'</h2><p>'+a.p+'</p>'+CORE_DOCS+DOCS_LIB(),'Agents & Skills · Docs');
 }
 
+/* ================= SAFETY — accident prevention, AHAs, pre-task plans, training, audits. ALL DATA FICTITIOUS. ================= */
+const SAF = { tab:'dash', open:{} };
+const SAF_TABS = [['dash','&#128202; Overview'],['pretask','&#128203; Pre-Task Plans'],['aha','&#128218; AHA Library'],
+  ['training','&#127891; Training'],['audit','&#128269; Site Audits']];
+
+function safKPIs(){
+  const k=[
+    ['Days since recordable','412','0 open OSHA recordables','gd'],
+    ['Open hazards','1','Missing MCC arc-flash label — Fairhaven LS2','wr'],
+    ['Pre-task plans (this wk)','34','Across 6 active crews','ac'],
+    ['Training compliance','96%','2 renewals due this month','gd'],
+    ['AHAs on file','28','26 reviewed within 12 months','ac'],
+    ['Site audits (this mo)','3','1 open corrective action','ac'],
+    ['TRIR — trailing 12','0.8','Industry benchmark 2.1','gd'],
+    ['Toolbox talks','19','This month, across all crews','ac']
+  ];
+  return '<div class="fk">'+k.map(function(x){
+    return '<div class="fkc '+x[3]+'"><span class="l">'+x[0]+'</span><span class="v">'+x[1]+'</span>'+
+      '<span class="s">'+x[2]+'</span></div>';}).join('')+'</div>';
+}
+function safHazards(){
+  return '<div class="frisk warn"><b>Missing MCC arc-flash label</b><span>Fairhaven Lift Station 2 · raised 8/17 · assigned to site super · replacement label on order</span></div>'+
+  '<div class="frisk"><b>Open trench, no edge protection</b><span>Fairhaven Lift Station 2 · raised 8/03 · abated same day — barricaded and logged</span></div>'+
+  '<div class="frisk"><b>Extension cord through standing water</b><span>Fairhaven Lift Station 2 · raised 8/10 · abated — cord rerouted, GFCI confirmed</span></div>';
+}
+function safDashBody(){
+  return safKPIs()+
+  '<div class="fsec">Open hazards &amp; recent corrective actions</div>'+safHazards()+
+  '<div class="fsec">Training compliance — org-wide</div>'+
+  '<div class="pmc pmm"><div class="pmm-r"><span class="pmm-l">All topics</span>'+
+    '<span class="pmm-t"><span class="pmm-f" style="width:96%;background:var(--good)"></span></span>'+
+    '<span class="pmm-v">96%</span></div></div>'+
+  '<div class="fsec">This month at a glance</div><table class="ftbl"><thead><tr><th>Metric</th><th class="r">Count</th></tr></thead><tbody>'+
+  '<tr><td>Pre-task plans filed</td><td class="r">34</td></tr>'+
+  '<tr><td>Toolbox talks delivered</td><td class="r">19</td></tr>'+
+  '<tr><td>Site audits completed</td><td class="r">3</td></tr>'+
+  '<tr><td>AHAs reviewed / revised</td><td class="r">4</td></tr>'+
+  '<tr><td>Corrective actions closed</td><td class="r">2</td></tr>'+
+  '</tbody></table>';
+}
+const SAF_PRETASK = [
+  ['Concrete — Crew A','Fairhaven Lift Station 2','4','6/6 signed'],
+  ['Steel erection','Fairhaven Lift Station 2','5','4/4 signed'],
+  ['Electrical','Larkspur Commerce Bldg B','3','3/3 signed'],
+  ['General labor','Slip 36 enabling work','2','2/2 signed'],
+  ['Masonry','Fairhaven Works Park decon','3','5/5 signed']
+];
+function safPretaskBody(){
+  return '<div class="fsec">Today\'s pre-task plans</div>'+
+  '<table class="ftbl"><thead><tr><th>Crew</th><th>Job</th><th class="r">Hazards ID\'d</th><th>Sign-off</th></tr></thead><tbody>'+
+  SAF_PRETASK.map(function(r){return '<tr><td class="nm">'+r[0]+'</td><td>'+r[1]+'</td><td class="r">'+r[2]+'</td>'+
+    '<td><span class="fst ok">'+r[3]+'</span></td></tr>';}).join('')+'</tbody></table>'+
+  '<div class="fnote">Every crew lead completes theirs from a phone before first swing of the day — Jeeves won\'t let the crew clock into the job cost code until it\'s signed.</div>'+
+  '<div class="fsec">Sample — Concrete, Crew A · Fairhaven Lift Station 2 · 8/19/2026</div>'+
+  '<div class="ex-card"><h3>Pre-Task Plan — Concrete placement, footing grid D</h3>'+
+  '<table class="ex-table"><tr><th>Hazard</th><th>Control</th></tr>'+
+  '<tr><td>Open excavation adjacent to pour</td><td>Barricaded per competent-person inspection; no foot traffic within 2ft of edge</td></tr>'+
+  '<tr><td>Pump truck boom swing radius</td><td>Spotter assigned; ground crew clear of swing zone</td></tr>'+
+  '<tr><td>Concrete splash / skin contact</td><td>Gloves, eye protection, long sleeves required for finishers</td></tr>'+
+  '<tr><td>Slips on wet subgrade</td><td>Plywood walk boards at access points</td></tr></table>'+
+  '<div class="ex-note">Crew: 6 · All signed 6:42 AM · Foreman: D. Prentiss. Fictitious sample data.</div></div>';
+}
+const SAF_AHA = [
+  ['Excavation &amp; trenching','Rev 3.1','7/12/2026','D. Prentiss','Current'],
+  ['Steel erection','Rev 2.0','6/02/2026','D. Prentiss','Current'],
+  ['Concrete placement &amp; finishing','Rev 4.0','5/18/2026','L. Ortiz','Current'],
+  ['Electrical — MCC &amp; panel work','Rev 2.2','8/01/2026','J. Rowe','Current'],
+  ['Confined space entry','Rev 3.0','3/09/2026','D. Prentiss','Review due 9/9'],
+  ['Working at height / fall protection','Rev 5.1','7/30/2026','L. Ortiz','Current'],
+  ['Crane picks &amp; rigging','Rev 2.0','2/14/2026','J. Rowe','Overdue — review due 8/14'],
+  ['Demolition','Rev 1.3','6/20/2026','D. Prentiss','Current']
+];
+function safAhaBody(){
+  return '<div class="fsec">Activity Hazard Analysis library — 28 on file</div>'+
+  '<table class="ftbl"><thead><tr><th>Activity</th><th>Revision</th><th>Last reviewed</th><th>Competent person</th><th>Status</th></tr></thead><tbody>'+
+  SAF_AHA.map(function(r){const overdue=r[4].indexOf('Overdue')===0;
+    return '<tr><td class="nm">'+r[0]+'</td><td class="mono">'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td>'+
+    '<td><span class="fst '+(overdue?'wn':'ok')+'">'+r[4]+'</span></td></tr>';}).join('')+'</tbody></table>'+
+  '<div class="fnote">Every AHA carries the competent person\'s sign-off and a 12-month review clock — Jeeves flags it before it lapses, same as the crane-picks entry above.</div>';
+}
+const SAF_TRAIN = [
+  ['OSHA 10 — all field staff','Annual refresher','100%','—'],
+  ['Competent person — excavation','Per assignment','100%','—'],
+  ['Fall protection','Annual','92%','2 due 9/1'],
+  ['Confined space entry','Annual','88%','1 due 8/28'],
+  ['First aid / CPR','Biennial','100%','—'],
+  ['Forklift / aerial lift operator','Per certification','95%','1 due 9/15']
+];
+function safTrainingBody(){
+  return '<div class="fsec">Training compliance by topic</div>'+
+  '<table class="ftbl"><thead><tr><th>Topic</th><th>Cadence</th><th class="r">Compliance</th><th>Next due</th></tr></thead><tbody>'+
+  SAF_TRAIN.map(function(r){const p=parseInt(r[2],10);
+    return '<tr><td class="nm">'+r[0]+'</td><td>'+r[1]+'</td><td class="r '+(p>=95?'pos':(p<90?'neg':''))+'">'+r[2]+'</td><td>'+r[3]+'</td></tr>';}).join('')+
+  '</tbody></table>'+
+  '<div class="fnote">Renewals post to To-Do 30 days out automatically — nothing is tracked on a spreadsheet.</div>';
+}
+const SAF_AUDITS = [
+  ['8/17/2026','Fairhaven Lift Station 2','D. Prentiss','9','1 open','Open'],
+  ['8/10/2026','Larkspur Commerce Bldg B','J. Rowe','6','0 open','Closed'],
+  ['8/03/2026','Fairhaven Works Park decon','L. Ortiz','11','0 open','Closed']
+];
+function safAuditBody(){
+  return '<div class="fsec">Site safety audits — this month</div>'+
+  '<table class="ftbl"><thead><tr><th>Date</th><th>Site</th><th>Auditor</th><th class="r">Findings</th><th>Corrective</th><th>Status</th></tr></thead><tbody>'+
+  SAF_AUDITS.map(function(r){return '<tr><td>'+r[0]+'</td><td class="nm">'+r[1]+'</td><td>'+r[2]+'</td><td class="r">'+r[3]+'</td>'+
+    '<td>'+r[4]+'</td><td><span class="fst '+(r[5]==='Open'?'wn':'ok')+'">'+r[5]+'</span></td></tr>';}).join('')+'</tbody></table>'+
+  '<div class="fnote">3 audits this month, 26 findings total, 1 corrective action still open.</div>'+
+  '<div class="fsec">Open corrective action</div>'+
+  '<div class="frisk warn"><b>Missing MCC arc-flash label</b><span>Fairhaven Lift Station 2 · found in the 8/17 audit · same item tracked on the Overview tab and in PM</span></div>';
+}
+function safBody(){
+  if (SAF.tab==='pretask')  return safPretaskBody();
+  if (SAF.tab==='aha')      return safAhaBody();
+  if (SAF.tab==='training') return safTrainingBody();
+  if (SAF.tab==='audit')    return safAuditBody();
+  return safDashBody();
+}
+function SAFETY_PREVIEW(){
+  return '<div class="mp-cap"><span class="l">What Safety opens to</span><span class="r">Live module &middot; role-based</span></div>'+
+  '<div class="mp"><div class="mp-hd"><div class="mp-logo">AIC</div>'+
+   '<div class="mp-hd-ic"><i>&#128101;</i><i>&#9673;</i><i>&#128247;</i><i>i</i><i>&#8645;</i><i>&#9790;</i></div></div>'+
+  '<div class="mp-body">'+
+   '<div class="fin-hd"><div><div class="t">Cornerstone Structural Group</div>'+
+    '<div class="s">Safety &amp; Quality Assurance &middot; role-based</div></div>'+
+    '<div class="fin-hr"><span class="doc">Doc ID: CSG-SAFE-2026-008 &middot; As of 8/19/2026</span></div></div>'+
+   '<div class="fin-tabs">'+SAF_TABS.map(function(t){return '<button class="fin-tab'+(SAF.tab===t[0]?' on':'')+'" data-saf="tab:'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>'+
+   '<div class="docwrap">'+safBody()+'</div>'+
+  '</div><div class="mp-sync"><span class="d"></span>synced</div></div>';
+}
+function renderSafety(){
+  const a=AGENT_PITCH.safety;
+  setWork('<span class="eyebrow">Safety</span><h2>'+a.h+'</h2><p>'+a.p+'</p>'+ALA+SAFETY_PREVIEW(),'Agents & Skills · Safety');
+}
+
 const SOON = (n)=>`<div class="mp-soon"><div class="t">Module preview — next up</div>
 <div class="d">The ${n} screen drops in here the same way Meet's does. Meet is wired as the working example so you can judge the pattern first.</div></div>`;
 
@@ -1799,8 +1935,10 @@ const AGENT_PITCH = {
   meet:    { n:'Meet',    h:`Every relationship, <span class="cu">one board.</span>`, p:`Every contact from every conference and plan room lands in one place — Jeeves reminds you who to follow up with and when.`, prev:MEET_PREVIEW },
   todo:    { n:'To-Do',   h:`Nothing falls through <span class="cu">the cracks.</span>`, p:`Every task an agent is waiting on you for shows up here — assign it, accept it, or verify it's done. To-Do is how the platform's agents hand work to your team and prove it got done, so it runs inside the platform rather than on its own.`, ala:PLAT, prev:TODO_PREVIEW },
   recpt:   { n:'Recpt',   h:`Receipts, filed <span class="cu">before you're back in the truck.</span>`, p:`Snap a photo in the field, say what it's for, and Jeeves codes it to the right job and cost code automatically.`, prev:RECPT_PREVIEW },
-  decide:  { n:'Decide',  h:`Every bid, <span class="cu">scored and ready.</span>`, p:`Every solicitation that lands in your estimating inbox, triaged and waiting on one call from you. Follow it all the way through to the precon workspace.`, custom:'decide' },
+  decide:  { n:'Decide',  h:`Every bid, <span class="cu">scored and ready.</span>`, p:`Every solicitation that lands in your estimating inbox, triaged and waiting on one call from you. Say go and it hands straight to PreCon.`, custom:'decide' },
+  precon:  { n:'PreCon',  h:`Every award, <span class="cu">straight to issued documents.</span>`, p:`Every GO decision drops into a working folder — intake memo, drawings, subcontractor quotes, and a WBS build-out that turns into your estimate, schedule and proposal. One workspace, start to submittal.`, custom:'precon' },
   inspect: { n:'Inspect', h:`Job walks, <span class="cu">captured hands-free.</span>`, p:`A phone app on the jobsite and the same form in the office — classify the project, capture findings by voice or photo, and let the write-up generate itself. Several walks per project is the normal case, not the exception.`, custom:'inspect' },
+  safety:  { n:'Safety',  h:`Every hazard, <span class="cu">caught before it costs you.</span>`, p:`Accident prevention programs, job and activity hazard analyses, daily pre-task plans, training tracking and site audits — one record for every crew, every job, every day.`, custom:'safety' },
   pm:      { n:'PM',      h:`Every awarded job, <span class="cu">tracked start to close.</span>`, p:`Award through closeout in one record — schedule, subs, change events, billings, safety and the ledger all hanging off the same project.`, custom:'pm' },
   po:      { n:'PO',      h:`Purchasing, <span class="cu">without the paper chase.</span>`, p:`A plain purchase-order app — raise the PO, pick the cost target, log the receipt against it. Every commitment posts to the job the moment it is raised, so the cost report is never waiting on month-end.`, custom:'po', ala:PLAT },
   finance: { n:'Finance', h:`The numbers your controller <span class="cu">wishes updated themselves.</span>`, p:`This is the core of the platform, not an add-on — every estimate, receipt, purchase order and pay application lands here. P&L, cash flow, backlog, A/R and job-level margin, rolled up for the owner, the bank and the bonding agent as the work happens rather than at month-end.`, custom:'finance', ala:CORE },
@@ -1907,7 +2045,9 @@ function paintAgent(key){
   if (a.custom === 'docs') { DOCS.open=null; renderDOCS(); return; }
   if (a.custom === 'pm') { PM.view='list'; renderPM(); return; }
   if (a.custom === 'inspect') { INS.menu=false; renderInspect(); return; }
-  if (a.custom === 'decide') { DEC.calSel=null; DEC.pcTab=0; DEC.hiliTab='input'; DEC.hiliOpen={}; DEC.outDoc='est'; DEC.view='dash'; renderDecide(); return; }
+  if (a.custom === 'decide') { DEC.calSel=null; DEC.pcTab=0; DEC.hiliTab='input'; DEC.hiliOpen={}; DEC.outDoc='est'; DEC.view='dash'; DEC.standalone=false; renderDecide(); return; }
+  if (a.custom === 'precon') { DEC.calSel=null; DEC.pcTab=0; DEC.hiliTab='input'; DEC.hiliOpen={}; DEC.outDoc='est'; DEC.view='precon'; DEC.standalone=true; renderDecide(); return; }
+  if (a.custom === 'safety') { renderSafety(); return; }
   setWork(`<span class="eyebrow">${a.n}</span><h2>${a.h}</h2><p>${a.p}</p>${a.ala || ALA}${a.prev || SOON(a.n)}`,
           'Agents & Skills · ' + a.n);
 }
@@ -1999,6 +2139,12 @@ workScreen.addEventListener('click', (e)=>{
       addBubble('Opened the sample project — schedule, subs, PCOs, billings, safety and ledger all on one record.'); return; }
     if (v.indexOf('sec:')===0) { const k=v.slice(4); PM.open[k]=!PM.open[k];
       setWork(PM_PROJECT(),'PM · Fairhaven Lift Station 2'); return; }
+  }
+  const saf = e.target.closest('[data-saf]');
+  if (saf) {
+    const v = saf.dataset.saf, q = v.split(':');
+    if (q[0]==='tab') { SAF.tab=q[1]; renderSafety(); return; }
+    if (q[0]==='sec') { SAF.open[q[1]]=!SAF.open[q[1]]; renderSafety(); return; }
   }
   const ins = e.target.closest('[data-ins]');
   if (ins) {
