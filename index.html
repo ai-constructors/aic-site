@@ -332,7 +332,12 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
         </div>
         <div class="jw-hd-l2">
           <div class="seg"><span class="on">AEC</span><span>CRE</span></div>
-          <div class="seg sm"><span></span><span class="on"></span></div>
+          <!-- Device toggle. Was two empty <span>s sharing one ::before rule, so both
+               icons drew the same 9px square and neither had a title to hover. -->
+          <div class="seg sm" role="group" aria-label="Preview device">
+            <button type="button" class="dv ph" data-dev="phone" aria-label="Phone view" data-tip="Phone — the field crew's view"></button>
+            <button type="button" class="dv lt on" data-dev="laptop" aria-label="Desktop view" data-tip="Desktop — the office view"></button>
+          </div>
         </div>
         <div class="jw-hd-r2">
           <button class="hbtn" title="Expand">↕</button>

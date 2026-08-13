@@ -1176,6 +1176,72 @@ function pmGantt(){
     {ntp:'2026-03-02', today:6, title:'Fairhaven Lift Station 2 Rehabilitation · 42 work packages', unscheduled:PM_UNSCHED});
 }
 
+/* ===========================================================================
+   PM · PROJECT CHARTS — added 2026-08-13.
+   The sample project had tables only; there were no charts in PM -> Project.
+   Two forms, chosen by the job the data does:
+     1. pmCashChart()  — three series over four months = distinct-series /
+                         change-over-time -> grouped columns, categorical color.
+     2. pmBillMeter()  — two ratios against the same limit -> paired meters.
+                         This is the over/under-billing check a PM actually
+                         opens the page for.
+   Palette #1C6FB0 / #12855A / #C85018 was run through the categorical six
+   checks against the #FBF8EF card surface (all-pairs): lightness, chroma,
+   CVD separation, normal-vision floor and contrast all pass. Do not
+   substitute brand copper #B5552F here — it fails the chroma floor and drops
+   the green/copper pair to CVD dE 6.0.
+   Identity is never color-alone: legend + direct labels on the final month,
+   native <title> tooltips on every column, and the table below carries every
+   value.
+   =========================================================================== */
+var PMC_S=[{k:'Billed',c:'#1C6FB0'},{k:'Received',c:'#12855A'},{k:'Costs',c:'#C85018'}];
+var PMC_D=[['May',182400,182400,164900],['Jun',204110,182400,191240],
+           ['Jul',196320,204110,172600],['Aug',160000,196320,82464]];
+function pmcK(v){return '$'+(v/1000).toFixed(0)+'k';}
+function pmCashChart(){
+  var TOP=8, BASE=176, L=46, R=630, MAX=210000, H=BASE-TOP;
+  var gw=(R-L)/PMC_D.length, bw=24, gap=2, grp=bw*3+gap*2, off=(gw-grp)/2;
+  var y=function(v){return BASE-v/MAX*H;};
+  // hairline gridlines + rounded y ticks
+  var grid='', ticks=[0,50000,100000,150000,200000];
+  for(var i=0;i<ticks.length;i++){var ty=y(ticks[i]);
+    grid+='<line x1="'+L+'" y1="'+ty+'" x2="'+R+'" y2="'+ty+'" class="pmc-grid"/>'+
+          '<text x="'+(L-8)+'" y="'+(ty+3)+'" class="pmc-ax pmc-ar">'+(ticks[i]?pmcK(ticks[i]):'0')+'</text>';}
+  var bars='';
+  for(var g=0;g<PMC_D.length;g++){
+    var row=PMC_D[g], gx=L+g*gw+off;
+    for(var sIdx=0;sIdx<3;sIdx++){
+      var v=row[sIdx+1], x=gx+sIdx*(bw+gap), by=y(v), h=BASE-by, r=4;
+      // square at the baseline, 4px rounded data-end
+      bars+='<path class="pmc-b" d="M'+x+' '+BASE+' L'+x+' '+(by+r)+' Q'+x+' '+by+' '+(x+r)+' '+by+
+            ' L'+(x+bw-r)+' '+by+' Q'+(x+bw)+' '+by+' '+(x+bw)+' '+(by+r)+' L'+(x+bw)+' '+BASE+' Z" fill="'+PMC_S[sIdx].c+'">'+
+            '<title>'+row[0]+' 2026 · '+PMC_S[sIdx].k+' — $'+v.toLocaleString()+'</title></path>';
+      // Direct-label the Costs series only. A number on every column is unreadable,
+      // and labelling the last month put the Billed label behind the taller Received
+      // bar. Costs is rightmost in each group, so its label always has clear air.
+      if(sIdx===2) bars+='<text x="'+(x+bw/2)+'" y="'+(by-6)+'" class="pmc-vl">'+pmcK(v)+'</text>';
+    }
+    bars+='<text x="'+(L+g*gw+gw/2)+'" y="'+(BASE+16)+'" class="pmc-ax pmc-am">'+row[0]+'</text>';
+  }
+  var leg=PMC_S.map(function(x){return '<span><i style="background:'+x.c+'"></i>'+x.k+'</span>';}).join('');
+  return '<div class="pmc"><div class="pmc-t">Billed, received and cost by month</div>'+
+    '<div class="pmc-lg">'+leg+'</div>'+
+    '<svg viewBox="0 0 640 200" class="pmc-sv" role="img" aria-label="Grouped column chart of billed, received and cost by month, May through August 2026.">'+
+    grid+'<line x1="'+L+'" y1="'+BASE+'" x2="'+R+'" y2="'+BASE+'" class="pmc-base"/>'+bars+'</svg>'+
+    '<div class="pmc-n">August cost drops to $82k as the lift-station material buy cleared in June. Receipts trail billings by one month throughout — that gap is the pay-app cycle, not a collection problem.</div></div>';
+}
+function pmBillMeter(){
+  var cur=1331412, billed=742830, cplt=58, bpct=billed/cur*100;
+  var d=cplt-bpct, dollars=Math.round(d/100*cur);
+  var row=function(lbl,v,c,val){return '<div class="pmm-r"><span class="pmm-l">'+lbl+'</span>'+
+    '<span class="pmm-t"><span class="pmm-f" style="width:'+v.toFixed(1)+'%;background:'+c+'"></span></span>'+
+    '<span class="pmm-v">'+val+'</span></div>';};
+  return '<div class="pmc pmm"><div class="pmc-t">Billing against progress</div>'+
+    row('Work complete',cplt,'#1C6FB0',cplt.toFixed(1)+'%')+
+    row('Value billed',bpct,'#12855A',bpct.toFixed(1)+'%')+
+    '<div class="pmm-cal'+(d>0?' under':'')+'"><b>Under-billed by '+d.toFixed(1)+' points</b>'+
+    '<span>Roughly $'+dollars.toLocaleString()+' of completed work has not been invoiced. Pick it up on the next pay app.</span></div></div>';
+}
 function pmSec(key,title,body,meta){
   const o=PM.open[key];
   return '<div class="pm-sec"><button class="pm-sh" data-pm="sec:'+key+'"><span>'+title+
@@ -1216,7 +1282,7 @@ function PM_PROJECT(){
       ['6/09/26','Owner request','PCO-007 · SCADA tie-in','$18,112','Approved'],
       ['7/28/26','Design clarification','PCO-011 · MCC clearance','$9,640','<span class="warn">Pending</span>'],
       ['8/14/26','Weather delay','PCO-013 · 3 days','$0','<span class="warn">Pending</span>']]),'2 pending')+
-    pmSec('cash','Cash flow', t(['Month','Billed','Received','Costs','Net'],[
+    pmSec('cash','Cash flow', pmCashChart()+pmBillMeter()+t(['Month','Billed','Received','Costs','Net'],[
       ['May 2026','$182,400','$182,400','$164,900','<span class="good">+$17,500</span>'],
       ['Jun 2026','$204,110','$182,400','$191,240','<span class="bad">&minus;$8,840</span>'],
       ['Jul 2026','$196,320','$204,110','$172,600','<span class="good">+$31,510</span>'],
@@ -1530,7 +1596,7 @@ function finDonut(){
   const tot=active+closed+remain;
   const a=active/tot*360, c=a+closed/tot*360;
   return '<div class="fdon"><div class="ring" style="background:conic-gradient(#2f6f8f 0deg '+a+'deg, var(--good) '+a+'deg '+c+'deg, var(--oat-2) '+c+'deg 360deg)"></div>'+
-   '<div class="lg"><span><i style="background:#2f6f8f"></i>Active billed '+fk(active)+'</span>'+
+   '<div class="dlg"><span><i style="background:#2f6f8f"></i>Active billed '+fk(active)+'</span>'+
    '<span><i style="background:var(--good)"></i>Closed billed '+fk(closed)+'</span>'+
    '<span><i style="background:var(--oat-2)"></i>Active remaining '+fk(remain)+'</span></div></div>';
 }
@@ -2021,6 +2087,14 @@ chatLog.addEventListener('click', (e)=>{
   if (chip) handleMessage(chip.dataset.chip);
 });
 
+/* Device toggle — move the active state on click. Added 2026-08-13; the control
+   previously had no handler at all, so it looked interactive and was not. */
+document.querySelectorAll('.jw-scope .seg.sm .dv').forEach(function(b){
+  b.addEventListener('click', function(){
+    b.parentNode.querySelectorAll('.dv').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+  });
+});
 document.getElementById('resetBtn').addEventListener('click', reset);
 document.getElementById('backBtn').addEventListener('click', navBack);
 workScreen.addEventListener('input',(e)=>{
