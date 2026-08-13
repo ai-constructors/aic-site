@@ -1856,23 +1856,56 @@ function safPretaskBody(){
   '<tr><td>Slips on wet subgrade</td><td>Plywood walk boards at access points</td></tr></table>'+
   '<div class="ex-note">Crew: 6 · All signed 6:42 AM · Foreman: D. Prentiss. Fictitious sample data.</div></div>';
 }
+/* RAC = Risk Assessment Code (USACE EM 385-1-1 severity x probability): E=Extremely High,
+   H=High, M=Moderate, L=Low. Reused here as the .sv chip vocabulary already in the codebase
+   (hi=copper, md=amber, ok=green) — E and H share the "hi" tier since this app doesn't
+   otherwise distinguish them, same simplification Inspect's finding severities already use. */
 const SAF_AHA = [
-  ['Excavation &amp; trenching','Rev 3.1','7/12/2026','D. Prentiss','Current'],
-  ['Steel erection','Rev 2.0','6/02/2026','D. Prentiss','Current'],
-  ['Concrete placement &amp; finishing','Rev 4.0','5/18/2026','L. Ortiz','Current'],
-  ['Electrical — MCC &amp; panel work','Rev 2.2','8/01/2026','J. Rowe','Current'],
-  ['Confined space entry','Rev 3.0','3/09/2026','D. Prentiss','Review due 9/9'],
-  ['Working at height / fall protection','Rev 5.1','7/30/2026','L. Ortiz','Current'],
-  ['Crane picks &amp; rigging','Rev 2.0','2/14/2026','J. Rowe','Overdue — review due 8/14'],
-  ['Demolition','Rev 1.3','6/20/2026','D. Prentiss','Current']
+  ['Excavation &amp; trenching','H','29 CFR 1926 Subpart P (.650–.652)','Rev 3.1','7/12/2026','D. Prentiss','Current'],
+  ['Steel erection','H','29 CFR 1926 Subpart R','Rev 2.0','6/02/2026','D. Prentiss','Current'],
+  ['Concrete placement &amp; finishing','M','29 CFR 1926.702 &amp; .703','Rev 4.0','5/18/2026','L. Ortiz','Current'],
+  ['Electrical — MCC &amp; panel work','H','29 CFR 1926.417 / .702 (LOTO)','Rev 2.2','8/01/2026','J. Rowe','Current'],
+  ['Confined space entry','H','29 CFR 1926 Subpart AA','Rev 3.0','3/09/2026','D. Prentiss','Review due 9/9'],
+  ['Working at height / fall protection','H','29 CFR 1926 Subpart M','Rev 5.1','7/30/2026','L. Ortiz','Current'],
+  ['Crane picks &amp; rigging','H','29 CFR 1926 Subpart CC','Rev 2.0','2/14/2026','J. Rowe','Overdue — review due 8/14'],
+  ['Demolition','H','29 CFR 1926 Subpart T','Rev 1.3','6/20/2026','D. Prentiss','Current']
 ];
+function racChip(rac){ return '<span class="sv '+(rac==='L'?'ok':(rac==='M'?'md':'hi'))+'" style="font-size:10px;padding:2px 7px">'+rac+'</span>'; }
 function safAhaBody(){
   return '<div class="fsec">Activity Hazard Analysis library — 28 on file</div>'+
-  '<table class="ftbl"><thead><tr><th>Activity</th><th>Revision</th><th>Last reviewed</th><th>Competent person</th><th>Status</th></tr></thead><tbody>'+
-  SAF_AHA.map(function(r){const overdue=r[4].indexOf('Overdue')===0;
-    return '<tr><td class="nm">'+r[0]+'</td><td class="mono">'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td>'+
-    '<td><span class="fst '+(overdue?'wn':'ok')+'">'+r[4]+'</span></td></tr>';}).join('')+'</tbody></table>'+
-  '<div class="fnote">Every AHA carries the competent person\'s sign-off and a 12-month review clock — Jeeves flags it before it lapses, same as the crane-picks entry above.</div>';
+  '<table class="ftbl"><thead><tr><th>Activity</th><th>RAC</th><th>Key standard</th><th>Last reviewed</th><th>Competent person</th><th>Status</th></tr></thead><tbody>'+
+  SAF_AHA.map(function(r){const overdue=r[6].indexOf('Overdue')===0;
+    return '<tr><td class="nm">'+r[0]+'</td><td>'+racChip(r[1])+'</td><td class="mono">'+r[2]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td>'+
+    '<td><span class="fst '+(overdue?'wn':'ok')+'">'+r[6]+'</span></td></tr>';}).join('')+'</tbody></table>'+
+  '<div class="fnote">RAC = severity &times; probability (USACE EM 385-1-1). Every AHA carries the competent person\'s sign-off and a 12-month review clock — Jeeves flags it before it lapses, same as the crane-picks entry above.</div>'+
+  '<div class="fsec">Sample — AHA 09 · Excavation, Trenching &amp; Spoil Export · Fairhaven Lift Station 2</div>'+
+  safAhaSample();
+}
+function safRacMatrix(){
+  const rows=[['Catastrophic','E','E','H','H','M'],['Critical','E','H','H','M','L'],
+    ['Marginal','H','M','M','L','L'],['Negligible','M','L','L','L','L']];
+  return '<table class="ftbl" style="max-width:420px"><thead><tr><th>Severity \\ Prob.</th><th>Frequent</th><th>Likely</th><th>Occas.</th><th>Seldom</th><th>Unlikely</th></tr></thead><tbody>'+
+  rows.map(function(r){return '<tr><td class="nm">'+r[0]+'</td>'+r.slice(1).map(function(v){return '<td>'+racChip(v)+'</td>';}).join('')+'</tr>';}).join('')+
+  '</tbody></table>';
+}
+function safAhaSample(){
+  const steps=[
+    ['Pre-excavation utility locate &amp; permit','Struck utility, electrocution, gas release','Locate service called 48 hrs prior; hand-dig within 24&quot; of marked lines; excavation permit posted at site','M'],
+    ['Excavation &amp; spoil placement','Cave-in, engulfment','Competent person inspects daily and after any rain or vibration event; spoil kept 2ft+ from edge; protective system sized to soil classification','H'],
+    ['Trench entry (&gt;4ft)','Cave-in, atmospheric hazard','No entry without an approved protective system; atmosphere tested before entry if hazard suspected; ladder within 25ft of every worker','H'],
+    ['Edge protection &amp; access control','Fall-in, struck-by from mobile equipment','Barricade or fence all open trenches; physical barrier at every edge; dedicated spotter for equipment operating near the edge','M'],
+    ['Backfill &amp; compaction','Struck-by compaction equipment, collapse during backfill','Ground guide required; no personnel in the trench during mechanized backfill','M']
+  ];
+  return '<div class="ex-card"><h3>AHA 09 &mdash; Excavation, Trenching &amp; Spoil Export</h3>'+
+  '<div class="ex-note" style="margin:0 0 8px">Baseline PPE: hard hat, ANSI Z87.1 safety glasses, hi-vis Class 2 vest, cut-resistant gloves, steel-toe boots. Task-specific PPE added per step below.</div>'+
+  safRacMatrix()+
+  '<table class="ex-table" style="margin-top:8px"><tr><th>Job step</th><th>Anticipated hazard</th><th>Controls / mitigation</th><th>RAC</th></tr>'+
+  steps.map(function(s){return '<tr><td>'+s[0]+'</td><td>'+s[1]+'</td><td>'+s[2]+'</td><td>'+racChip(s[3])+'</td></tr>';}).join('')+
+  '</table>'+
+  '<table class="ftbl" style="margin-top:8px"><thead><tr><th>Equipment</th><th>Training</th><th>Competent person</th><th>Inspection</th></tr></thead><tbody>'+
+  '<tr><td>Trench box / shoring system</td><td>Competent person — excavation</td><td>D. Prentiss</td><td>Daily, before entry and after rain or vibration</td></tr>'+
+  '</tbody></table>'+
+  '<div class="ex-note">Overall RAC: '+racChip('H')+' &nbsp;·&nbsp; Standard: 29 CFR 1926 Subpart P (.650–.652), .651 (utilities, atmosphere, egress). Reviewed and signed by crew before first entry. Fictitious sample data.</div></div>';
 }
 const SAF_TRAIN = [
   ['OSHA 10 — all field staff','Annual refresher','100%','—'],
