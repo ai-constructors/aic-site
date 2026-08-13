@@ -1795,7 +1795,7 @@ function renderDOCS(){
 }
 
 /* ================= SAFETY — accident prevention, AHAs, pre-task plans, training, audits. ALL DATA FICTITIOUS. ================= */
-const SAF = { tab:'dash', open:{} };
+const SAF = { tab:'dash', open:{}, ahaOpen:false };
 const SAF_TABS = [['dash','&#128202; Overview'],['pretask','&#128203; Pre-Task Plans'],['aha','&#128218; AHA Library'],
   ['training','&#127891; Training'],['audit','&#128269; Site Audits']];
 
@@ -1874,12 +1874,18 @@ function racChip(rac){ return '<span class="sv '+(rac==='L'?'ok':(rac==='M'?'md'
 function safAhaBody(){
   return '<div class="fsec">Activity Hazard Analysis library — 28 on file</div>'+
   '<table class="ftbl"><thead><tr><th>Activity</th><th>RAC</th><th>Key standard</th><th>Last reviewed</th><th>Competent person</th><th>Status</th></tr></thead><tbody>'+
-  SAF_AHA.map(function(r){const overdue=r[6].indexOf('Overdue')===0;
-    return '<tr><td class="nm">'+r[0]+'</td><td>'+racChip(r[1])+'</td><td class="mono">'+r[2]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td>'+
+  SAF_AHA.map(function(r,i){const overdue=r[6].indexOf('Overdue')===0, wired=(i===0);
+    const nameCell = wired
+      ? '<button class="dc-ttl link" data-saf="aha:open">'+r[0]+'</button>'
+      : r[0];
+    return '<tr><td class="nm">'+nameCell+'</td><td>'+racChip(r[1])+'</td><td class="mono">'+r[2]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td>'+
     '<td><span class="fst '+(overdue?'wn':'ok')+'">'+r[6]+'</span></td></tr>';}).join('')+'</tbody></table>'+
   '<div class="fnote">RAC = severity &times; probability (USACE EM 385-1-1). Every AHA carries the competent person\'s sign-off and a 12-month review clock — Jeeves flags it before it lapses, same as the crane-picks entry above.</div>'+
-  '<div class="fsec">Sample — AHA 09 · Excavation, Trenching &amp; Spoil Export · Fairhaven Lift Station 2</div>'+
-  safAhaSample();
+  (SAF.ahaOpen
+    ? '<div class="fsec">AHA 09 — Excavation, Trenching &amp; Spoil Export · Fairhaven Lift Station 2</div>'+
+      '<button class="dc-hint" data-saf="aha:open" style="cursor:pointer;background:none;border:none;padding:0">&#9652; Hide — back to the library list</button>'+
+      safAhaSample()
+    : '<div class="dc-hint" style="margin-top:4px">&#9656; Click &ldquo;Excavation &amp; trenching&rdquo; above to see the actual AHA Jeeves generates — full RAC matrix, job steps and controls.</div>');
 }
 function safRacMatrix(){
   const rows=[['Catastrophic','E','E','H','H','M'],['Critical','E','H','H','M','L'],
@@ -2178,6 +2184,9 @@ workScreen.addEventListener('click', (e)=>{
     const v = saf.dataset.saf, q = v.split(':');
     if (q[0]==='tab') { SAF.tab=q[1]; renderSafety(); return; }
     if (q[0]==='sec') { SAF.open[q[1]]=!SAF.open[q[1]]; renderSafety(); return; }
+    if (q[0]==='aha' && q[1]==='open') { SAF.ahaOpen=!SAF.ahaOpen; renderSafety();
+      if (SAF.ahaOpen) addBubble('Opened AHA 09 — the full RAC matrix, job steps and controls Jeeves generates for excavation work.');
+      return; }
   }
   const ins = e.target.closest('[data-ins]');
   if (ins) {
