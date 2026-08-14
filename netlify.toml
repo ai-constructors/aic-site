@@ -1,0 +1,10 @@
+# netlify.toml — added 2026-08-14 (SA), Mary Max lead-intake build. aic-site
+# had no backend functions before this; the site's existing routing (the
+# /pilot.html redirect, native Netlify Forms detection) is driven entirely by
+# the top-level _redirects file and HTML form attributes, both untouched by
+# this file. This only wires up the new netlify/functions/ directory.
+[build]
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"

@@ -315,6 +315,15 @@ footer{background:var(--ink);color:var(--paper);padding:54px 0 30px}
     var btn=f.querySelector('button[type=submit]');
     var body=new URLSearchParams(new FormData(f)).toString();
     btn.disabled=true; note.classList.remove('ok'); note.textContent='Sending…';
+    /* Redundant Supabase write (Mary Max's primary channel — see MaryMax-
+       Agent-Spec-v0.1 §7 and Mark's 2026-08-13 ruling: email + Supabase,
+       neither depends on the other). Fire-and-forget: this call never gates
+       the visible success/error message below, which stays tied only to
+       Netlify's own native Forms POST, exactly as before this change. If
+       lead-intake.js is down or misconfigured, the visitor never sees it —
+       they still get their email confirmation either way. */
+    fetch('/.netlify/functions/lead-intake',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+      .catch(function(){ /* best-effort only — see comment above */ });
     fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
       .then(function(r){
         if(!r.ok) throw new Error(r.status);
